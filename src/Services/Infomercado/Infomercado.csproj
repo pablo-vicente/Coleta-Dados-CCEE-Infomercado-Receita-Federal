@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Infomercado.Domain\Infomercado.Domain.csproj" />
+      <ProjectReference Include="..\..\Extensions\Extensions.EntityFrameworkCore\Extensions.EntityFrameworkCore.csproj" />
+      <ProjectReference Include="..\..\Extensions\Extensions.EPPlus\Extensions.EPPlus.csproj" />
+      <ProjectReference Include="..\..\Extensions\Extensions.Extensions.Hosting\Extensions.Extensions.Hosting.csproj" />
+      <ProjectReference Include="..\Infomercado.Domain\Infomercado.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

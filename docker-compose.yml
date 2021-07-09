@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  SQL-SERVER:
+    container_name: SQL-SERVER
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "(!)Password(@)"
+      MSSQL_PID: Express
+    restart: always
+    volumes:
+      - "./Databases:/var/opt/mssql/data"
+    ports: 
+      - 1433:1433
+#volumes:
+#  SQL-SERVER-DATA:
+#    name: SQL-SERVER-DATA
+#    driver: local
+#    driver_opts:
+#      type: 'none'
+#      o: 'bind'
+#      device: C:/Users/Pablo/Desktop/Planilhas/BD
