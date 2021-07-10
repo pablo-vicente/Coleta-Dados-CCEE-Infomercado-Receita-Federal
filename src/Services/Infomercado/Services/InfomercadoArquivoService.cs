@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using Infomercado.Domain.Interfaces;
 using Infomercado.Domain.Models;
 using Infomercado.Domain.Repositories;
 using Microsoft.Extensions.Configuration;
@@ -15,12 +15,18 @@ namespace InfoMercado.Services
     {
         private readonly string _caminhoDownload;
         private readonly ILogger _logger;
-        private readonly IInfomercadoArquivoRepository _infomercadoArquivoRepository;
+        private readonly InfomercadoArquivoRepository _infomercadoArquivoRepository;
+        private readonly Infomercado007PerfisAgentes _infomercado007PerfisAgentes;
 
-        public InfomercadoArquivoService(ILogger<InfomercadoArquivoService> logger, IConfiguration configuration, IInfomercadoArquivoRepository infomercadoArquivoRepository)
+        public InfomercadoArquivoService(
+            ILogger<InfomercadoArquivoService> logger, 
+            IConfiguration configuration, 
+            InfomercadoArquivoRepository infomercadoArquivoRepository, 
+            Infomercado007PerfisAgentes infomercado007PerfisAgentes)
         {
             _logger = logger;
             _infomercadoArquivoRepository = infomercadoArquivoRepository;
+            _infomercado007PerfisAgentes = infomercado007PerfisAgentes;
             _caminhoDownload = configuration["Planilhas_InfoMercado"];;
         }
 
@@ -31,7 +37,7 @@ namespace InfoMercado.Services
         {
             _logger.LogInformation("Salvando arquivos no banco de dados...");
             
-            var arquivos = new DirectoryInfo(_caminhoDownload).GetFiles("*.xlsx");
+            var arquivos = new DirectoryInfo(_caminhoDownload).GetFiles("*.xlsx").OrderBy(x=>x.Name).ToList();
             var infoMercadosArquivos = _infomercadoArquivoRepository.ReadAll().ToList();
 
             var infoMercadoArquivos = new HashSet<InfoMercadoArquivo>();
@@ -46,13 +52,9 @@ namespace InfoMercado.Services
                 // Primeiro data entre [], segundo ano (4 digitos)
                 var dadosArquivo = arquivo.Name.Split("InfoMercado Dados Individuais ");
 
-                infoMercadoArquivos.Add(new InfoMercadoArquivo
-                {
-                    Nome = arquivo.Name,
-                    Ano = int.Parse(dadosArquivo[1][..4]),
-                    Lido = false,
-                    DataUltimaAtualizacao = DateTime.Parse(dadosArquivo[0].Substring(1, 10))
-                });
+                var ano = int.Parse(dadosArquivo[1][..4], CultureInfo.CurrentCulture);
+                var dataAtualizacao = DateTime.Parse(dadosArquivo[0][..10], CultureInfo.CurrentCulture);
+                infoMercadoArquivos.Add(new InfoMercadoArquivo(arquivo.Name, ano, dataAtualizacao));
             }
 
             _infomercadoArquivoRepository.Create(infoMercadoArquivos.ToArray());
@@ -67,10 +69,11 @@ namespace InfoMercado.Services
             {
                 var path = Path.Combine(_caminhoDownload, infoMercadoArquivo.Nome);
                 var fileInfo = new FileInfo(path);
-
-                using var excelPackage = new ExcelPackage(fileInfo);
+                
                 _logger.LogInformation($"Lendo arquivo \"{fileInfo.Name}\" CCEE. Tamanho: {fileInfo.Length / 1024 / 1024} MB");
+                using var excelPackage = new ExcelPackage(fileInfo);
 
+                _infomercado007PerfisAgentes.ImportarPlanilha(excelPackage);
                 // Primeiro Importa os Perfis devido as referências
                 // Importar007ListaPerfis(excelPackage, infoMercadoArquivo);
 
@@ -88,6 +91,7 @@ namespace InfoMercado.Services
                 // Importar012DisponibilidadeLeilao(excelPackage, infoMercadoArquivo);
 
                 // Registra o Arquivo InfoMercado como lido
+                // infoMercadoArquivo.AtualizarLido(true);
                 _infomercadoArquivoRepository.Update(infoMercadoArquivo);
                 _logger.LogInformation($"Arquivo \"{fileInfo.Name}\" importado com sucesso.");
             }

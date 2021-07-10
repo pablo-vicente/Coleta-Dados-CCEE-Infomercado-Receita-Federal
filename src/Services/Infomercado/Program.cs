@@ -33,18 +33,21 @@ namespace InfoMercado
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<InfoMercadoHostService>();
-                    
-                    services.AddTransient<InfomercadoArquivoService>();
-                    services.AddTransient<IInfomercadoArquivoRepository, InfomercadoArquivoRepository>();
 
-                    services.AddDbContext<InfoMercadoDbContext>();
-                    // services.AddDbContext<InfoMercadoDbContext>(options =>
-                    // {
-                    //     options.UseLazyLoadingProxies(useLazyLoadingProxies: false);
-                    //     options.UseSqlServer(hostContext.Configuration.GetConnectionString("InfoMercado"),
-                    //         m => m.MigrationsAssembly(typeof(InfoMercadoDbContext)
-                    //             .GetTypeInfo().Assembly.GetName().Name));
-                    // }, ServiceLifetime.Transient);
+                    services.AddSingleton<InfomercadoArquivoService>();
+                    services.AddSingleton<Infomercado007PerfisAgentes>();
+                    
+                    
+                    services.AddTransient<InfomercadoArquivoRepository>();
+                    services.AddTransient<AgenteRepository>();
+
+                    services.AddDbContext<InfoMercadoDbContext>(options =>
+                    {
+                        options.UseLazyLoadingProxies(useLazyLoadingProxies: false);
+                        options.UseSqlServer(hostContext.Configuration.GetConnectionString("InfoMercado"),
+                            m => m.MigrationsAssembly(typeof(InfoMercadoDbContext)
+                                .GetTypeInfo().Assembly.GetName().Name));
+                    }, ServiceLifetime.Transient);
 
                 })
                 .ConfigureLogging((hostContext, configLogging) =>

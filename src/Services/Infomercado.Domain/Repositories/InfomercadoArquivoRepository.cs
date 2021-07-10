@@ -5,7 +5,7 @@ using Infomercado.Domain.Models;
 
 namespace Infomercado.Domain.Repositories
 {
-    public class InfomercadoArquivoRepository : IInfomercadoArquivoRepository
+    public class InfomercadoArquivoRepository : IRepository<InfoMercadoArquivo, int>
     {
         private readonly InfoMercadoDbContext _infoMercadoDbContext;
         

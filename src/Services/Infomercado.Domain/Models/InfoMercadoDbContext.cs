@@ -28,7 +28,9 @@ namespace Infomercado.Domain.Models
     {
         public InfoMercadoDbContext(DbContextOptions<InfoMercadoDbContext> options) : base(options) { }
 
-        public virtual DbSet<InfoMercadoArquivo> InfoMercadoArquivos { get; set; }
+        public virtual DbSet<InfoMercadoArquivo> InfoMercadoArquivos { get; private set; }
+        public virtual DbSet<Agente> Agentes { get; private set; }
+        public virtual DbSet<PerfilAgente> PerfilAgentes { get; private set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,6 +40,22 @@ namespace Infomercado.Domain.Models
             modelBuilder.Entity<InfoMercadoArquivo>().Property(x => x.Ano).IsRequired();
             modelBuilder.Entity<InfoMercadoArquivo>().Property(x => x.DataUltimaAtualizacao).IsRequired();
             modelBuilder.Entity<InfoMercadoArquivo>().Property(x => x.Lido).IsRequired();
+            
+            modelBuilder.Entity<Agente>().HasKey(x=>x.Id);
+            modelBuilder.Entity<Agente>().Property(x => x.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Agente>().HasAlternateKey(x => x.Codigo);
+            modelBuilder.Entity<Agente>().Property(x => x.Sigla).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<Agente>().Property(x => x.NomeEmpresarial).IsRequired().HasMaxLength(200);
+            modelBuilder.Entity<Agente>().Property(x => x.Cnpj).IsRequired().HasMaxLength(18);
+            modelBuilder.Entity<Agente>().HasAlternateKey(x => x.Cnpj);
+            modelBuilder.Entity<Agente>()
+                .HasMany(e => e.PerfisAgente)
+                .WithOne(e => e.Agente)
+                .HasForeignKey(e => e.IdAgente);
+            
+            modelBuilder.Entity<PerfilAgente>().HasKey(x => x.Id);
+            modelBuilder.Entity<PerfilAgente>().HasAlternateKey(x => x.Codigo);
+            modelBuilder.Entity<PerfilAgente>().Property(x => x.Sigla).IsRequired().HasMaxLength(50);
         }
     }
 }
