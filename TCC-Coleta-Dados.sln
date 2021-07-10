@@ -4,8 +4,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{FBBC3DAE-215C-4ECB-99E2-3FF5AEDC8229}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.EntityFrameworkCore", "src\Extensions\Extensions.EntityFrameworkCore\Extensions.EntityFrameworkCore.csproj", "{E8C86090-88A6-42FA-A08E-8CD5B8D38D01}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.EPPlus", "src\Extensions\Extensions.EPPlus\Extensions.EPPlus.csproj", "{684D163B-E06B-4F16-B70D-106769941DE4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.Extensions.Hosting", "src\Extensions\Extensions.Extensions.Hosting\Extensions.Extensions.Hosting.csproj", "{58B17F7E-CA5E-4214-B149-48C20757CC8F}"
@@ -29,10 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E8C86090-88A6-42FA-A08E-8CD5B8D38D01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8C86090-88A6-42FA-A08E-8CD5B8D38D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8C86090-88A6-42FA-A08E-8CD5B8D38D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8C86090-88A6-42FA-A08E-8CD5B8D38D01}.Release|Any CPU.Build.0 = Release|Any CPU
 		{684D163B-E06B-4F16-B70D-106769941DE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{684D163B-E06B-4F16-B70D-106769941DE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{684D163B-E06B-4F16-B70D-106769941DE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -55,7 +49,6 @@ Global
 		{F2184D73-4648-4235-89B0-EFC564E53ED1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E8C86090-88A6-42FA-A08E-8CD5B8D38D01} = {2E193FAA-C3E3-4CC9-8783-565B3119D702}
 		{684D163B-E06B-4F16-B70D-106769941DE4} = {2E193FAA-C3E3-4CC9-8783-565B3119D702}
 		{58B17F7E-CA5E-4214-B149-48C20757CC8F} = {2E193FAA-C3E3-4CC9-8783-565B3119D702}
 		{E23263E3-6F99-4505-9E65-9C34C0C3EE20} = {2E193FAA-C3E3-4CC9-8783-565B3119D702}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Infomercado.Domain.Interfaces;
 using Infomercado.Domain.Models;
 using Infomercado.Domain.Repositories;
 using Microsoft.Extensions.Configuration;
@@ -14,9 +15,9 @@ namespace InfoMercado.Services
     {
         private readonly string _caminhoDownload;
         private readonly ILogger _logger;
-        private readonly InfomercadoArquivoRepository _infomercadoArquivoRepository;
+        private readonly IInfomercadoArquivoRepository _infomercadoArquivoRepository;
 
-        public InfomercadoArquivoService(ILogger<InfomercadoArquivoService> logger, IConfiguration configuration, InfomercadoArquivoRepository infomercadoArquivoRepository)
+        public InfomercadoArquivoService(ILogger<InfomercadoArquivoService> logger, IConfiguration configuration, IInfomercadoArquivoRepository infomercadoArquivoRepository)
         {
             _logger = logger;
             _infomercadoArquivoRepository = infomercadoArquivoRepository;

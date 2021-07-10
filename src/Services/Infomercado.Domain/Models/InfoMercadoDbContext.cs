@@ -1,23 +1,33 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.IO;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace Infomercado.Domain.Models
 {
+    public class InfoMercadoDbContextFactory : IDesignTimeDbContextFactory<InfoMercadoDbContext>
+    {
+        public InfoMercadoDbContext CreateDbContext(string[] args)
+        {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+            
+            var optionsBuilder = new DbContextOptionsBuilder<InfoMercadoDbContext>();
+            var connectionString = configuration.GetConnectionString("InfoMercado");
+            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseLazyLoadingProxies(false);
+            optionsBuilder.EnableSensitiveDataLogging();
+
+            return new InfoMercadoDbContext(optionsBuilder.Options);
+        }
+    }
+    
     public class InfoMercadoDbContext : DbContext
     {
         public InfoMercadoDbContext(DbContextOptions<InfoMercadoDbContext> options) : base(options) { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer();
-                optionsBuilder.UseLazyLoadingProxies(false);
-                optionsBuilder.EnableSensitiveDataLogging();
-            }
-
-            base.OnConfiguring(optionsBuilder);
-        }
-        
         public virtual DbSet<InfoMercadoArquivo> InfoMercadoArquivos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

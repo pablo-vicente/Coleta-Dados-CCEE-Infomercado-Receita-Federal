@@ -1,9 +1,12 @@
 ﻿using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using Infomercado.Domain.Interfaces;
+using Infomercado.Domain.Models;
 using Infomercado.Domain.Repositories;
 using InfoMercado.HostService;
 using InfoMercado.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,16 +34,18 @@ namespace InfoMercado
                 {
                     services.AddHostedService<InfoMercadoHostService>();
                     
-                    services.AddScoped<InfomercadoArquivoService>();
-                    services.AddSingleton<IInfomercadoArquivoRepository, InfomercadoArquivoRepository>();
+                    services.AddTransient<InfomercadoArquivoService>();
+                    services.AddTransient<IInfomercadoArquivoRepository, InfomercadoArquivoRepository>();
 
+                    services.AddDbContext<InfoMercadoDbContext>();
                     // services.AddDbContext<InfoMercadoDbContext>(options =>
                     // {
                     //     options.UseLazyLoadingProxies(useLazyLoadingProxies: false);
-                    //     options.UseSqlServer(hostContext.Configuration.GetConnectionString("RiscoInfoMercado"),
+                    //     options.UseSqlServer(hostContext.Configuration.GetConnectionString("InfoMercado"),
                     //         m => m.MigrationsAssembly(typeof(InfoMercadoDbContext)
                     //             .GetTypeInfo().Assembly.GetName().Name));
                     // }, ServiceLifetime.Transient);
+
                 })
                 .ConfigureLogging((hostContext, configLogging) =>
                 {
