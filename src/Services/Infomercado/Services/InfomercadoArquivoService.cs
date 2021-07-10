@@ -16,17 +16,22 @@ namespace InfoMercado.Services
         private readonly string _caminhoDownload;
         private readonly ILogger _logger;
         private readonly InfomercadoArquivoRepository _infomercadoArquivoRepository;
+        private readonly Infomercado001Contratos _infomercado001Contratos;
         private readonly Infomercado007PerfisAgentes _infomercado007PerfisAgentes;
 
         public InfomercadoArquivoService(
             ILogger<InfomercadoArquivoService> logger, 
             IConfiguration configuration, 
-            InfomercadoArquivoRepository infomercadoArquivoRepository, 
+            InfomercadoArquivoRepository infomercadoArquivoRepository,
+            Infomercado001Contratos infomercado001Contratos,
             Infomercado007PerfisAgentes infomercado007PerfisAgentes)
         {
             _logger = logger;
             _infomercadoArquivoRepository = infomercadoArquivoRepository;
+            
+            _infomercado001Contratos = infomercado001Contratos;
             _infomercado007PerfisAgentes = infomercado007PerfisAgentes;
+            
             _caminhoDownload = configuration["Planilhas_InfoMercado"];;
         }
 
@@ -73,7 +78,9 @@ namespace InfoMercado.Services
                 _logger.LogInformation($"Lendo arquivo \"{fileInfo.Name}\" CCEE. Tamanho: {fileInfo.Length / 1024 / 1024} MB");
                 using var excelPackage = new ExcelPackage(fileInfo);
 
-                _infomercado007PerfisAgentes.ImportarPlanilha(excelPackage);
+                // _infomercado007PerfisAgentes.ImportarPlanilha(excelPackage);
+                _infomercado001Contratos.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
+                
                 // Primeiro Importa os Perfis devido as referências
                 // Importar007ListaPerfis(excelPackage, infoMercadoArquivo);
 

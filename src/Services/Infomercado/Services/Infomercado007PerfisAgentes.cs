@@ -87,10 +87,6 @@ namespace InfoMercado.Services
                     }
 
                     linha++;
-                    if (linha == 15352)
-                    {
-                        Console.WriteLine();
-                    }
                 }
                 
                 _agenteRepository.Update(agentesCadastrados.ToArray());

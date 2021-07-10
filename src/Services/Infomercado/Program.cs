@@ -35,11 +35,13 @@ namespace InfoMercado
                     services.AddHostedService<InfoMercadoHostService>();
 
                     services.AddSingleton<InfomercadoArquivoService>();
+                    services.AddSingleton<Infomercado001Contratos>();
                     services.AddSingleton<Infomercado007PerfisAgentes>();
                     
-                    
                     services.AddTransient<InfomercadoArquivoRepository>();
+                    services.AddTransient<ContratoRepository>();
                     services.AddTransient<AgenteRepository>();
+                    services.AddTransient<PerfilAgenteRepository>();
 
                     services.AddDbContext<InfoMercadoDbContext>(options =>
                     {

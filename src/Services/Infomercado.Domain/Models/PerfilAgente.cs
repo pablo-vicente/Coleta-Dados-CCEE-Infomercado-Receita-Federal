@@ -1,4 +1,5 @@
-﻿using Infomercado.Domain.Enums;
+﻿using System.Collections.Generic;
+using Infomercado.Domain.Enums;
 
 namespace Infomercado.Domain.Models
 {
@@ -12,6 +13,7 @@ namespace Infomercado.Domain.Models
             Status = status;
             Submercado = submercado;
             Varejista = varejista;
+            Contratos = new List<Contrato>();
         }
 
         public int Id { get; private set; }
@@ -30,6 +32,8 @@ namespace Infomercado.Domain.Models
         public int IdAgente { get; private set; }
 
         public virtual Agente Agente { get; private set; }
+        
+        public virtual ICollection<Contrato> Contratos { get; }
 
         public void AtualizarSigla(string sigla) => Sigla = sigla;
         public void AtualizarClasse(Classe classe) => Classe = classe;

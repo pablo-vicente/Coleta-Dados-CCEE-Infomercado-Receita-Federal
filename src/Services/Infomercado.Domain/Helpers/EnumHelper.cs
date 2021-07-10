@@ -14,7 +14,7 @@ namespace Infomercado.Domain.Helpers
             {
                 if (Attribute.GetCustomAttribute(field, typeof (DisplayAttribute)) is DisplayAttribute attribute)
                 {
-                    if (string.Equals(attribute.Name, name, StringComparison.InvariantCultureIgnoreCase))
+                    if (string.Equals(attribute.Name, name, StringComparison.OrdinalIgnoreCase))
                         return (T) field.GetValue(null);
                 }
                 else

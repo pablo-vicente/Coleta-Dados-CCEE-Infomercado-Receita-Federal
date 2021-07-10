@@ -31,6 +31,7 @@ namespace Infomercado.Domain.Models
         public virtual DbSet<InfoMercadoArquivo> InfoMercadoArquivos { get; private set; }
         public virtual DbSet<Agente> Agentes { get; private set; }
         public virtual DbSet<PerfilAgente> PerfilAgentes { get; private set; }
+        public virtual DbSet<Contrato> Contratos { get; private set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,6 +57,14 @@ namespace Infomercado.Domain.Models
             modelBuilder.Entity<PerfilAgente>().HasKey(x => x.Id);
             modelBuilder.Entity<PerfilAgente>().HasAlternateKey(x => x.Codigo);
             modelBuilder.Entity<PerfilAgente>().Property(x => x.Sigla).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<PerfilAgente>()
+                .HasMany(x => x.Contratos)
+                .WithOne(x => x.PerfilAgente)
+                .HasForeignKey(x => x.IdPerfilAgente);
+            
+            modelBuilder.Entity<Contrato>().HasKey(x => x.Id);
+            modelBuilder.Entity<Contrato>().HasAlternateKey(x => new {x.IdPerfilAgente, x.Data, x.Tipo});
+
         }
     }
 }

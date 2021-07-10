@@ -4,14 +4,16 @@ using Infomercado.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infomercado.Domain.Migrations
 {
     [DbContext(typeof(InfoMercadoDbContext))]
-    partial class InfoMercadoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210710185350_AddContratos")]
+    partial class AddContratos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,13 +65,13 @@ namespace Infomercado.Domain.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("ContratacaoMWm")
+                    b.Property<double?>("ContratacaoMWm")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("Data")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("IdPerfilAgente")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Mes")
                         .HasColumnType("int");
 
                     b.Property<int>("Tipo")
@@ -77,7 +79,9 @@ namespace Infomercado.Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("IdPerfilAgente", "Data", "Tipo");
+                    b.HasAlternateKey("Mes", "Tipo");
+
+                    b.HasIndex("IdPerfilAgente");
 
                     b.ToTable("Contratos");
                 });
