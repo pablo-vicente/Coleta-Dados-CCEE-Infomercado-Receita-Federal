@@ -20,6 +20,7 @@ namespace InfoMercado.Services
         private readonly Infomercado002Usinas _infomercado002Usinas;
         private readonly Infomercado004Contabilizacao _infomercado004Contabilizacao;
         private readonly Infomercado005Encargos _infomercado005Encargos;
+        private readonly Infomercado006Mre _infomercado006Mre;
         private readonly Infomercado007PerfisAgentes _infomercado007PerfisAgentes;
 
         public InfomercadoArquivoService(
@@ -30,6 +31,7 @@ namespace InfoMercado.Services
             Infomercado002Usinas infomercado002Usinas,
             Infomercado004Contabilizacao infomercado004Contabilizacao,
             Infomercado005Encargos infomercado005Encargos,
+            Infomercado006Mre infomercado006Mre,
             Infomercado007PerfisAgentes infomercado007PerfisAgentes)
         {
             _logger = logger;
@@ -37,6 +39,7 @@ namespace InfoMercado.Services
             
             _infomercado001Contratos = infomercado001Contratos;
             _infomercado007PerfisAgentes = infomercado007PerfisAgentes;
+            _infomercado006Mre = infomercado006Mre;
             _infomercado005Encargos = infomercado005Encargos;
             _infomercado004Contabilizacao = infomercado004Contabilizacao;
             _infomercado002Usinas = infomercado002Usinas;
@@ -88,14 +91,14 @@ namespace InfoMercado.Services
                 using var excelPackage = new ExcelPackage(fileInfo);
 
                 _infomercado007PerfisAgentes.ImportarPlanilha(excelPackage);
+                
                 _infomercado001Contratos.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
                 _infomercado002Usinas.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
                 // _infomercado003Comsumo(excelPackage, infoMercadoArquivo.Ano);
                 _infomercado004Contabilizacao.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
                 _infomercado005Encargos.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
+                _infomercado006Mre.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
                 
-                // Importar006MRE(excelPackage, infoMercadoArquivo);
-                //
                 // Importar008Cotista(excelPackage, infoMercadoArquivo);
                 // Importar009Proinfa(excelPackage, infoMercadoArquivo);
                 // Importar010MCSD(excelPackage, infoMercadoArquivo);

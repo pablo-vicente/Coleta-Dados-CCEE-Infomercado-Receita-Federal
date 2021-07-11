@@ -40,6 +40,7 @@ namespace Infomercado.Domain.Models
         public virtual ICollection<DadosGeracaoUsina> DadosGeracaoUsinas { get; }
         public virtual ICollection<Contabilizacao> Contabilizacaes { get; }
         public virtual ICollection<Encargo> Encargos { get; }
+        public virtual ICollection<DadoMre> DadosMres { get; }
 
         public void AtualizarSigla(string sigla) => Sigla = sigla;
         public void AtualizarClasse(Classe classe) => Classe = classe;

@@ -39,6 +39,7 @@ namespace InfoMercado
                     services.AddSingleton<Infomercado002Usinas>();
                     services.AddSingleton<Infomercado004Contabilizacao>();
                     services.AddSingleton<Infomercado005Encargos>();
+                    services.AddSingleton<Infomercado006Mre>();
                     services.AddSingleton<Infomercado007PerfisAgentes>();
                     
                     services.AddTransient<InfomercadoArquivoRepository>();
@@ -50,6 +51,7 @@ namespace InfoMercado
                     services.AddTransient<DadosGeracaoUsinaRepository>();
                     services.AddTransient<ContabilizacaoRepository>();
                     services.AddTransient<EncargoRepository>();
+                    services.AddTransient<DadoMreRepository>();
 
                     services.AddDbContext<InfoMercadoDbContext>(options =>
                     {
