@@ -36,6 +36,7 @@ namespace Infomercado.Domain.Models
         public virtual DbSet<ParcelaUsina> ParcelaUsinas { get; private set; }
         public virtual DbSet<DadosGeracaoUsina> DadosGeracaoUsinas { get; private set; }
         public virtual DbSet<Contabilizacao> Contabilizacaes { get; private set; }
+        public virtual DbSet<Encargo> Encargos { get; private set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -73,6 +74,10 @@ namespace Infomercado.Domain.Models
                 .HasMany(x => x.Contabilizacaes)
                 .WithOne(x => x.PerfilAgente)
                 .HasForeignKey(x => x.IdPerfilAgente);
+            modelBuilder.Entity<PerfilAgente>()
+                .HasMany(x => x.Encargos)
+                .WithOne(x => x.PerfilAgente)
+                .HasForeignKey(x => x.IdPerfilAgente);
             
             modelBuilder.Entity<Contrato>().HasKey(x => x.Id);
             modelBuilder.Entity<Contrato>().HasAlternateKey(x => new {x.IdPerfilAgente, x.Data, x.Tipo});
@@ -93,6 +98,10 @@ namespace Infomercado.Domain.Models
                 .HasMany(x => x.DadosGeracaoUsina)
                 .WithOne(x => x.ParcelaUsina)
                 .HasForeignKey(x => x.IdParcelaUsina);
+            modelBuilder.Entity<ParcelaUsina>()
+                .HasMany(x => x.Encargos)
+                .WithOne(x => x.ParcelaUsina)
+                .HasForeignKey(x => x.IdParcelaUsina);
             
             modelBuilder.Entity<DadosGeracaoUsina>().HasKey(x => x.Id);
             modelBuilder.Entity<DadosGeracaoUsina>().Property(x => x.Id).ValueGeneratedOnAdd();
@@ -103,6 +112,10 @@ namespace Infomercado.Domain.Models
             modelBuilder.Entity<Contabilizacao>().HasKey(x => x.Id);
             modelBuilder.Entity<Contabilizacao>().Property(x => x.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Contabilizacao>().HasAlternateKey(x => new {x.IdPerfilAgente, x.MesAno});
+            
+            modelBuilder.Entity<Encargo>().HasKey(x => x.Id);
+            modelBuilder.Entity<Encargo>().Property(x => x.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Encargo>().HasAlternateKey(x => new {x.IdParcelaUsina, x.IdPerfilAgente, x.Mes});
 
 
         }

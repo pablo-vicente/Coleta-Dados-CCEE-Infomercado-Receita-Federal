@@ -26,6 +26,7 @@ namespace Infomercado.Domain.Models
         public DateTime? DataInícioOperacaoComercialCcee { get; private set; }
 
         public ICollection<DadosGeracaoUsina> DadosGeracaoUsina { get; private set; }
+        public ICollection<Encargo> Encargos { get; private set; }
         
         public int IdUsina { get; private set; }
         
