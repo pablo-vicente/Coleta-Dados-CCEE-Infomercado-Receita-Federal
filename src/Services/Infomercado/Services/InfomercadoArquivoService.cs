@@ -17,6 +17,7 @@ namespace InfoMercado.Services
         private readonly ILogger _logger;
         private readonly InfomercadoArquivoRepository _infomercadoArquivoRepository;
         private readonly Infomercado001Contratos _infomercado001Contratos;
+        private readonly Infomercado002Usinas _infomercado002Usinas;
         private readonly Infomercado007PerfisAgentes _infomercado007PerfisAgentes;
 
         public InfomercadoArquivoService(
@@ -24,6 +25,7 @@ namespace InfoMercado.Services
             IConfiguration configuration, 
             InfomercadoArquivoRepository infomercadoArquivoRepository,
             Infomercado001Contratos infomercado001Contratos,
+            Infomercado002Usinas infomercado002Usinas,
             Infomercado007PerfisAgentes infomercado007PerfisAgentes)
         {
             _logger = logger;
@@ -31,7 +33,8 @@ namespace InfoMercado.Services
             
             _infomercado001Contratos = infomercado001Contratos;
             _infomercado007PerfisAgentes = infomercado007PerfisAgentes;
-            
+            _infomercado002Usinas = infomercado002Usinas;
+
             _caminhoDownload = configuration["Planilhas_InfoMercado"];;
         }
 
@@ -79,13 +82,9 @@ namespace InfoMercado.Services
                 using var excelPackage = new ExcelPackage(fileInfo);
 
                 // _infomercado007PerfisAgentes.ImportarPlanilha(excelPackage);
-                _infomercado001Contratos.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
+                // _infomercado001Contratos.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
+                _infomercado002Usinas.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
                 
-                // Primeiro Importa os Perfis devido as referências
-                // Importar007ListaPerfis(excelPackage, infoMercadoArquivo);
-
-                // Importar001Contratos(excelPackage, infoMercadoArquivo);
-                // Importar002Usinas(excelPackage, infoMercadoArquivo);
                 // Importar003Consumo(excelPackage, infoMercadoArquivo);
                 // Importar004Contabilizacao(excelPackage, infoMercadoArquivo);
                 // Importar005Encargos(excelPackage, infoMercadoArquivo);

@@ -4,14 +4,16 @@ using Infomercado.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infomercado.Domain.Migrations
 {
     [DbContext(typeof(InfoMercadoDbContext))]
-    partial class InfoMercadoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210710224729_Usinas")]
+    partial class Usinas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,6 +95,7 @@ namespace Infomercado.Domain.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Cegempreendimento")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
@@ -129,9 +132,6 @@ namespace Infomercado.Domain.Migrations
                     b.Property<double>("GeracaoTesteCentroGravidadeMWm")
                         .HasColumnType("float");
 
-                    b.Property<int>("IdParcelaUsina")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdPerfilAgente")
                         .HasColumnType("int");
 
@@ -153,11 +153,14 @@ namespace Infomercado.Domain.Migrations
                     b.Property<int>("TipoDespacho")
                         .HasColumnType("int");
 
+                    b.Property<int>("idParcelaUsina")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("IdParcelaUsina", "IdPerfilAgente", "Mes");
-
                     b.HasIndex("IdPerfilAgente");
+
+                    b.HasIndex("idParcelaUsina");
 
                     b.ToTable("DadosGeracaoUsinas");
                 });
@@ -299,15 +302,15 @@ namespace Infomercado.Domain.Migrations
 
             modelBuilder.Entity("Infomercado.Domain.Models.DadosGeracaoUsina", b =>
                 {
-                    b.HasOne("Infomercado.Domain.Models.ParcelaUsina", "ParcelaUsina")
-                        .WithMany("DadosGeracaoUsina")
-                        .HasForeignKey("IdParcelaUsina")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Infomercado.Domain.Models.PerfilAgente", "PerfilAgente")
                         .WithMany("DadosGeracaoUsinas")
                         .HasForeignKey("IdPerfilAgente")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Infomercado.Domain.Models.ParcelaUsina", "ParcelaUsina")
+                        .WithMany("DadosGeracaoUsina")
+                        .HasForeignKey("idParcelaUsina")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

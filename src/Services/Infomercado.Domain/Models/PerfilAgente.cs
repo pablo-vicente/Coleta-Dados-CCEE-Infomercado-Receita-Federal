@@ -14,6 +14,7 @@ namespace Infomercado.Domain.Models
             Submercado = submercado;
             Varejista = varejista;
             Contratos = new List<Contrato>();
+            DadosGeracaoUsinas = new List<DadosGeracaoUsina>();
         }
 
         public int Id { get; private set; }
@@ -34,6 +35,7 @@ namespace Infomercado.Domain.Models
         public virtual Agente Agente { get; private set; }
         
         public virtual ICollection<Contrato> Contratos { get; }
+        public virtual ICollection<DadosGeracaoUsina> DadosGeracaoUsinas { get; }
 
         public void AtualizarSigla(string sigla) => Sigla = sigla;
         public void AtualizarClasse(Classe classe) => Classe = classe;

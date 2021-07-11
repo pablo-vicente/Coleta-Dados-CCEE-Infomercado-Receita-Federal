@@ -32,6 +32,9 @@ namespace Infomercado.Domain.Models
         public virtual DbSet<Agente> Agentes { get; private set; }
         public virtual DbSet<PerfilAgente> PerfilAgentes { get; private set; }
         public virtual DbSet<Contrato> Contratos { get; private set; }
+        public virtual DbSet<Usina> Usinas { get; private set; }
+        public virtual DbSet<ParcelaUsina> ParcelaUsinas { get; private set; }
+        public virtual DbSet<DadosGeracaoUsina> DadosGeracaoUsinas { get; private set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -62,8 +65,37 @@ namespace Infomercado.Domain.Models
                 .WithOne(x => x.PerfilAgente)
                 .HasForeignKey(x => x.IdPerfilAgente);
             
+            modelBuilder.Entity<PerfilAgente>()
+                .HasMany(x => x.DadosGeracaoUsinas)
+                .WithOne(x => x.PerfilAgente)
+                .HasForeignKey(x => x.IdPerfilAgente);
+            
             modelBuilder.Entity<Contrato>().HasKey(x => x.Id);
             modelBuilder.Entity<Contrato>().HasAlternateKey(x => new {x.IdPerfilAgente, x.Data, x.Tipo});
+            
+            modelBuilder.Entity<Usina>().HasKey(x => x.Id);
+            modelBuilder.Entity<Usina>().Property(x => x.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Usina>().Property(x => x.SiglaAtivo).HasMaxLength(50);
+            modelBuilder.Entity<Usina>().Property(x => x.Uf).HasMaxLength(2);
+            modelBuilder.Entity<Usina>()
+                .HasMany(x => x.ParcelasUsina)
+                .WithOne(x => x.Usina)
+                .HasForeignKey(x => x.IdUsina);
+            
+            modelBuilder.Entity<ParcelaUsina>().HasKey(x => x.Id);
+            modelBuilder.Entity<ParcelaUsina>().Property(x => x.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<ParcelaUsina>().Property(x => x.Sigla).HasMaxLength(50);
+            modelBuilder.Entity<ParcelaUsina>()
+                .HasMany(x => x.DadosGeracaoUsina)
+                .WithOne(x => x.ParcelaUsina)
+                .HasForeignKey(x => x.IdParcelaUsina);
+            
+            modelBuilder.Entity<DadosGeracaoUsina>().HasKey(x => x.Id);
+            modelBuilder.Entity<DadosGeracaoUsina>().Property(x => x.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<DadosGeracaoUsina>().Property(x => x.Cegempreendimento).HasMaxLength(200);
+            modelBuilder.Entity<DadosGeracaoUsina>()
+                .HasAlternateKey(x => new {x.IdParcelaUsina, x.IdPerfilAgente, x.Mes});
+
 
         }
     }
