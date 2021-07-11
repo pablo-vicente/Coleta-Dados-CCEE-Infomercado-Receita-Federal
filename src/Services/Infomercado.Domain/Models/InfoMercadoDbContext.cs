@@ -35,6 +35,7 @@ namespace Infomercado.Domain.Models
         public virtual DbSet<Usina> Usinas { get; private set; }
         public virtual DbSet<ParcelaUsina> ParcelaUsinas { get; private set; }
         public virtual DbSet<DadosGeracaoUsina> DadosGeracaoUsinas { get; private set; }
+        public virtual DbSet<Contabilizacao> Contabilizacaes { get; private set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -64,9 +65,12 @@ namespace Infomercado.Domain.Models
                 .HasMany(x => x.Contratos)
                 .WithOne(x => x.PerfilAgente)
                 .HasForeignKey(x => x.IdPerfilAgente);
-            
             modelBuilder.Entity<PerfilAgente>()
                 .HasMany(x => x.DadosGeracaoUsinas)
+                .WithOne(x => x.PerfilAgente)
+                .HasForeignKey(x => x.IdPerfilAgente);
+            modelBuilder.Entity<PerfilAgente>()
+                .HasMany(x => x.Contabilizacaes)
                 .WithOne(x => x.PerfilAgente)
                 .HasForeignKey(x => x.IdPerfilAgente);
             
@@ -95,6 +99,10 @@ namespace Infomercado.Domain.Models
             modelBuilder.Entity<DadosGeracaoUsina>().Property(x => x.Cegempreendimento).HasMaxLength(200);
             modelBuilder.Entity<DadosGeracaoUsina>()
                 .HasAlternateKey(x => new {x.IdParcelaUsina, x.IdPerfilAgente, x.Mes});
+            
+            modelBuilder.Entity<Contabilizacao>().HasKey(x => x.Id);
+            modelBuilder.Entity<Contabilizacao>().Property(x => x.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Contabilizacao>().HasAlternateKey(x => new {x.IdPerfilAgente, x.MesAno});
 
 
         }
