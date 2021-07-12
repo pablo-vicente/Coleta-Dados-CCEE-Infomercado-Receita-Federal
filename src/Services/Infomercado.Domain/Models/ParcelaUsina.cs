@@ -15,6 +15,8 @@ namespace Infomercado.Domain.Models
             DadosGeracaoUsina = new List<DadosGeracaoUsina>();
             LiquidacaoDistribuidoraCotistaGarantiaFisicas = new List<LiquidacaoDistribuidoraCotistaGarantiaFisica>();
             ReceitaVendaDistribuidoraCotistaGarantiaFisicas = new List<ReceitaVendaDistribuidoraCotistaGarantiaFisica>();
+            ProinfaInformacoesConformeResolucao1833Usinas = new List<ProinfaInformacoesConformeResolucao1833Usina>();
+            ProinfaMontanteEnergiaAlocadaUsinasParticipantesMres = new List<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre>();
         }
 
         public int Id { get; private set; }
@@ -31,6 +33,8 @@ namespace Infomercado.Domain.Models
         public ICollection<Encargo> Encargos { get; private set; }
         public ICollection<LiquidacaoDistribuidoraCotistaGarantiaFisica> LiquidacaoDistribuidoraCotistaGarantiaFisicas { get; private set; }
         public ICollection<ReceitaVendaDistribuidoraCotistaGarantiaFisica> ReceitaVendaDistribuidoraCotistaGarantiaFisicas { get; private set; }
+        public ICollection<ProinfaInformacoesConformeResolucao1833Usina> ProinfaInformacoesConformeResolucao1833Usinas { get; private set; }
+        public ICollection<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre> ProinfaMontanteEnergiaAlocadaUsinasParticipantesMres { get; private set; }
         
         public int IdUsina { get; private set; }
         

@@ -19,6 +19,7 @@ namespace Infomercado.Domain.Models
             Encargos = new List<Encargo>();
             ReceitaVendaComercializacaoEnergiaNucleares = new List<ReceitaVendaComercializacaoEnergiaNuclear>();
             ReceitaVendaDistribuidoraCotistaEnergiaNucleares = new List<ReceitaVendaDistribuidoraCotistaEnergiaNuclear>();
+            ProinfaMontanteEnergiaAlocadaUsinasParticipantesMres = new List<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre>();
         }
 
         public int Id { get; private set; }
@@ -46,6 +47,7 @@ namespace Infomercado.Domain.Models
         public virtual ICollection<ReceitaVendaDistribuidoraCotistaGarantiaFisica> ReceitaVendaDistribuidoraCotistaGarantiaFisicas { get; }
         public virtual ICollection<ReceitaVendaComercializacaoEnergiaNuclear> ReceitaVendaComercializacaoEnergiaNucleares { get; }
         public virtual ICollection<ReceitaVendaDistribuidoraCotistaEnergiaNuclear> ReceitaVendaDistribuidoraCotistaEnergiaNucleares { get; }
+        public virtual ICollection<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre> ProinfaMontanteEnergiaAlocadaUsinasParticipantesMres { get; }
 
         public void AtualizarSigla(string sigla) => Sigla = sigla;
         public void AtualizarClasse(Classe classe) => Classe = classe;

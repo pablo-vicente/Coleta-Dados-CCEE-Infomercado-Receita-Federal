@@ -43,6 +43,8 @@ namespace Infomercado.Domain.Models
         public virtual DbSet<ReceitaVendaDistribuidoraCotistaGarantiaFisica> ReceitaVendaDistribuidoraCotistaGarantiaFisicas { get; private set; }
         public virtual DbSet<ReceitaVendaComercializacaoEnergiaNuclear> ReceitaVendaComercializacaoEnergiaNucleares { get; private set; }
         public virtual DbSet<ReceitaVendaDistribuidoraCotistaEnergiaNuclear> ReceitaVendaDistribuidoraCotistaEnergiaNucleares { get; private set; }
+        public virtual DbSet<ProinfaInformacoesConformeResolucao1833Usina> ProinfaInformacoesConformeResolucao1833Usinas { get; private set; }
+        public virtual DbSet<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre> ProinfaMontanteEnergiaAlocadaUsinasParticipantesMres { get; private set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -100,6 +102,10 @@ namespace Infomercado.Domain.Models
                 .HasMany(x => x.ReceitaVendaDistribuidoraCotistaEnergiaNucleares)
                 .WithOne(x => x.PerfilAgente)
                 .HasForeignKey(x => x.IdPerfilAgente);
+            modelBuilder.Entity<PerfilAgente>()
+                .HasMany(x => x.ProinfaMontanteEnergiaAlocadaUsinasParticipantesMres)
+                .WithOne(x => x.PerfilAgente)
+                .HasForeignKey(x => x.IdPerfilAgente);
             
             modelBuilder.Entity<Contrato>().HasKey(x => x.Id);
             modelBuilder.Entity<Contrato>().HasAlternateKey(x => new {x.IdPerfilAgente, x.Data, x.Tipo});
@@ -130,6 +136,14 @@ namespace Infomercado.Domain.Models
                 .HasForeignKey(x => x.IdParcelaUsina);
             modelBuilder.Entity<ParcelaUsina>()
                 .HasMany(x => x.ReceitaVendaDistribuidoraCotistaGarantiaFisicas)
+                .WithOne(x => x.ParcelaUsina)
+                .HasForeignKey(x => x.IdParcelaUsina);
+            modelBuilder.Entity<ParcelaUsina>()
+                .HasMany(x => x.ProinfaInformacoesConformeResolucao1833Usinas)
+                .WithOne(x => x.ParcelaUsina)
+                .HasForeignKey(x => x.IdParcelaUsina);
+            modelBuilder.Entity<ParcelaUsina>()
+                .HasMany(x => x.ProinfaMontanteEnergiaAlocadaUsinasParticipantesMres)
                 .WithOne(x => x.ParcelaUsina)
                 .HasForeignKey(x => x.IdParcelaUsina);
 
@@ -166,6 +180,14 @@ namespace Infomercado.Domain.Models
             modelBuilder.Entity<ReceitaVendaDistribuidoraCotistaEnergiaNuclear>().HasKey(x => x.Id);
             modelBuilder.Entity<ReceitaVendaDistribuidoraCotistaEnergiaNuclear>().Property(x => x.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<ReceitaVendaDistribuidoraCotistaEnergiaNuclear>().HasAlternateKey(x => new {x.MesAno, x.IdPerfilAgente});
+            
+            modelBuilder.Entity<ProinfaInformacoesConformeResolucao1833Usina>().HasKey(x => x.Id);
+            modelBuilder.Entity<ProinfaInformacoesConformeResolucao1833Usina>().Property(x => x.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<ProinfaInformacoesConformeResolucao1833Usina>().HasAlternateKey(x => new {x.IdParcelaUsina, x.Data});
+            
+            modelBuilder.Entity<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre>().HasKey(x => x.Id);
+            modelBuilder.Entity<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre>().Property(x => x.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre>().HasAlternateKey(x => new {x.IdParcelaUsina, x.IdPerfilAgente, x.Data});
 
 
         }
