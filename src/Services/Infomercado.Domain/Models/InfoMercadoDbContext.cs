@@ -45,6 +45,8 @@ namespace Infomercado.Domain.Models
         public virtual DbSet<ReceitaVendaDistribuidoraCotistaEnergiaNuclear> ReceitaVendaDistribuidoraCotistaEnergiaNucleares { get; private set; }
         public virtual DbSet<ProinfaInformacoesConformeResolucao1833Usina> ProinfaInformacoesConformeResolucao1833Usinas { get; private set; }
         public virtual DbSet<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre> ProinfaMontanteEnergiaAlocadaUsinasParticipantesMres { get; private set; }
+        public virtual DbSet<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade> MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidades { get; private set; }
+        public virtual DbSet<GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidade> GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidades { get; private set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -146,6 +148,14 @@ namespace Infomercado.Domain.Models
                 .HasMany(x => x.ProinfaMontanteEnergiaAlocadaUsinasParticipantesMres)
                 .WithOne(x => x.ParcelaUsina)
                 .HasForeignKey(x => x.IdParcelaUsina);
+            modelBuilder.Entity<ParcelaUsina>()
+                .HasMany(x => x.MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidades)
+                .WithOne(x => x.ParcelaUsina)
+                .HasForeignKey(x => x.IdParcelaUsina);
+            modelBuilder.Entity<ParcelaUsina>()
+                .HasMany(x => x.GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidades)
+                .WithOne(x => x.ParcelaUsina)
+                .HasForeignKey(x => x.IdParcelaUsina);
 
             modelBuilder.Entity<DadosGeracaoUsina>().HasKey(x => x.Id);
             modelBuilder.Entity<DadosGeracaoUsina>().Property(x => x.Id).ValueGeneratedOnAdd();
@@ -167,7 +177,7 @@ namespace Infomercado.Domain.Models
             
             modelBuilder.Entity<LiquidacaoDistribuidoraCotistaGarantiaFisica>().HasKey(x => x.Id);
             modelBuilder.Entity<LiquidacaoDistribuidoraCotistaGarantiaFisica>().Property(x => x.Id).ValueGeneratedOnAdd();
-            modelBuilder.Entity<LiquidacaoDistribuidoraCotistaGarantiaFisica>().HasAlternateKey(x => new {x.MesAno, x.IdParcelaUsina});
+            modelBuilder.Entity<LiquidacaoDistribuidoraCotistaGarantiaFisica>().HasAlternateKey(x => new {x.IdParcelaUsina, x.MesAno});
             
             modelBuilder.Entity<ReceitaVendaDistribuidoraCotistaGarantiaFisica>().HasKey(x => x.Id);
             modelBuilder.Entity<ReceitaVendaDistribuidoraCotistaGarantiaFisica>().Property(x => x.Id).ValueGeneratedOnAdd();
@@ -183,12 +193,25 @@ namespace Infomercado.Domain.Models
             
             modelBuilder.Entity<ProinfaInformacoesConformeResolucao1833Usina>().HasKey(x => x.Id);
             modelBuilder.Entity<ProinfaInformacoesConformeResolucao1833Usina>().Property(x => x.Id).ValueGeneratedOnAdd();
-            modelBuilder.Entity<ProinfaInformacoesConformeResolucao1833Usina>().HasAlternateKey(x => new {x.IdParcelaUsina, x.Data});
+            modelBuilder.Entity<ProinfaInformacoesConformeResolucao1833Usina>().Property(x => x.Ccve).HasMaxLength(10);
+            modelBuilder.Entity<ProinfaInformacoesConformeResolucao1833Usina>().HasAlternateKey(x => new {x.IdParcelaUsina, MesAno = x.Data});
             
             modelBuilder.Entity<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre>().HasKey(x => x.Id);
             modelBuilder.Entity<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre>().Property(x => x.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre>().HasAlternateKey(x => new {x.IdParcelaUsina, x.IdPerfilAgente, x.Data});
 
+            modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().HasKey(x => x.Id);
+            modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().Property(x => x.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().Property(x => x.CegeEmpreendimento).HasMaxLength(200);
+            modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().Property(x => x.Leilao).HasMaxLength(50);
+            modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().Property(x => x.Produto).HasMaxLength(8);
+            modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().Property(x => x.SiglaLeilao).HasMaxLength(50);
+            modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().HasAlternateKey(x => new {x.IdParcelaUsina, x.MesAno, x.Leilao, x.Produto, x.CegeEmpreendimento});
+
+            modelBuilder.Entity<GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidade>().HasKey(x => x.Id);
+            modelBuilder.Entity<GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidade>().Property(x => x.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidade>().Property(x => x.CegeEmpreendimento).HasMaxLength(200);
+            modelBuilder.Entity<GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidade>().HasAlternateKey(x => new {x.IdParcelaUsina, x.MesAno});
 
         }
     }

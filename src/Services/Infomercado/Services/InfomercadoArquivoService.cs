@@ -24,6 +24,7 @@ namespace InfoMercado.Services
         private readonly Infomercado007PerfisAgentes _infomercado007PerfisAgentes;
         private readonly Infomercado008Cotista _infomercado008Cotista;
         private readonly Infomercado009Proinfa _infomercado009Proinfa;
+        private readonly Infomercado0012DisponibilidadeLeilao _infomercado0012DisponibilidadeLeilao;
 
         public InfomercadoArquivoService(
             ILogger<InfomercadoArquivoService> logger, 
@@ -36,7 +37,7 @@ namespace InfoMercado.Services
             Infomercado006Mre infomercado006Mre,
             Infomercado007PerfisAgentes infomercado007PerfisAgentes, 
             Infomercado008Cotista infomercado008Cotista,
-            Infomercado009Proinfa infomercado009Proinfa)
+            Infomercado009Proinfa infomercado009Proinfa, Infomercado0012DisponibilidadeLeilao infomercado0012DisponibilidadeLeilao)
         {
             _logger = logger;
             _infomercadoArquivoRepository = infomercadoArquivoRepository;
@@ -45,6 +46,7 @@ namespace InfoMercado.Services
             _infomercado007PerfisAgentes = infomercado007PerfisAgentes;
             _infomercado008Cotista = infomercado008Cotista;
             _infomercado009Proinfa = infomercado009Proinfa;
+            _infomercado0012DisponibilidadeLeilao = infomercado0012DisponibilidadeLeilao;
             _infomercado006Mre = infomercado006Mre;
             _infomercado005Encargos = infomercado005Encargos;
             _infomercado004Contabilizacao = infomercado004Contabilizacao;
@@ -106,11 +108,9 @@ namespace InfoMercado.Services
                 _infomercado006Mre.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
                 _infomercado008Cotista.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
                 _infomercado009Proinfa.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
-                
-                // Importar010MCSD(excelPackage, infoMercadoArquivo);
                 // Importar011RRH(excelPackage, infoMercadoArquivo);
-                // Importar012DisponibilidadeLeilao(excelPackage, infoMercadoArquivo);
-
+                _infomercado0012DisponibilidadeLeilao.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
+                
                 // Registra o Arquivo InfoMercado como lido
                 // infoMercadoArquivo.AtualizarLido(true);
                 _infomercadoArquivoRepository.Update(infoMercadoArquivo);

@@ -17,6 +17,8 @@ namespace Infomercado.Domain.Models
             ReceitaVendaDistribuidoraCotistaGarantiaFisicas = new List<ReceitaVendaDistribuidoraCotistaGarantiaFisica>();
             ProinfaInformacoesConformeResolucao1833Usinas = new List<ProinfaInformacoesConformeResolucao1833Usina>();
             ProinfaMontanteEnergiaAlocadaUsinasParticipantesMres = new List<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre>();
+            MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidades = new List<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>();
+            GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidades = new List<GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidade>();
         }
 
         public int Id { get; private set; }
@@ -35,6 +37,8 @@ namespace Infomercado.Domain.Models
         public ICollection<ReceitaVendaDistribuidoraCotistaGarantiaFisica> ReceitaVendaDistribuidoraCotistaGarantiaFisicas { get; private set; }
         public ICollection<ProinfaInformacoesConformeResolucao1833Usina> ProinfaInformacoesConformeResolucao1833Usinas { get; private set; }
         public ICollection<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre> ProinfaMontanteEnergiaAlocadaUsinasParticipantesMres { get; private set; }
+        public ICollection<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade> MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidades { get; private set; }
+        public ICollection<GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidade> GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidades { get; private set; }
         
         public int IdUsina { get; private set; }
         

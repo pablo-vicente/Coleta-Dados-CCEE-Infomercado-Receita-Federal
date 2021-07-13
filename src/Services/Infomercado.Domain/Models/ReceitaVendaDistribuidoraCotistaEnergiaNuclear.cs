@@ -13,7 +13,7 @@ namespace Infomercado.Domain.Models
             IdPerfilAgente = idPerfilAgente;
         }
 
-        public int Id { get; set; }
+        public int Id { get; private set; }
         
         public DateTime MesAno { get; private set; }
 
