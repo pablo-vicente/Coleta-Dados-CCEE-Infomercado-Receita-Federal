@@ -18,6 +18,7 @@ namespace InfoMercado.Services
         private readonly InfomercadoArquivoRepository _infomercadoArquivoRepository;
         private readonly Infomercado001Contratos _infomercado001Contratos;
         private readonly Infomercado002Usinas _infomercado002Usinas;
+        private readonly Infomercado003Consumo _infomercado003Consumo;
         private readonly Infomercado004Contabilizacao _infomercado004Contabilizacao;
         private readonly Infomercado005Encargos _infomercado005Encargos;
         private readonly Infomercado006Mre _infomercado006Mre;
@@ -32,12 +33,14 @@ namespace InfoMercado.Services
             InfomercadoArquivoRepository infomercadoArquivoRepository,
             Infomercado001Contratos infomercado001Contratos,
             Infomercado002Usinas infomercado002Usinas,
+            Infomercado003Consumo infomercado003Consumo,
             Infomercado004Contabilizacao infomercado004Contabilizacao,
             Infomercado005Encargos infomercado005Encargos,
             Infomercado006Mre infomercado006Mre,
             Infomercado007PerfisAgentes infomercado007PerfisAgentes, 
             Infomercado008Cotista infomercado008Cotista,
-            Infomercado009Proinfa infomercado009Proinfa, Infomercado0012DisponibilidadeLeilao infomercado0012DisponibilidadeLeilao)
+            Infomercado009Proinfa infomercado009Proinfa, 
+            Infomercado0012DisponibilidadeLeilao infomercado0012DisponibilidadeLeilao)
         {
             _logger = logger;
             _infomercadoArquivoRepository = infomercadoArquivoRepository;
@@ -47,6 +50,7 @@ namespace InfoMercado.Services
             _infomercado008Cotista = infomercado008Cotista;
             _infomercado009Proinfa = infomercado009Proinfa;
             _infomercado0012DisponibilidadeLeilao = infomercado0012DisponibilidadeLeilao;
+            _infomercado003Consumo = infomercado003Consumo;
             _infomercado006Mre = infomercado006Mre;
             _infomercado005Encargos = infomercado005Encargos;
             _infomercado004Contabilizacao = infomercado004Contabilizacao;
@@ -102,7 +106,7 @@ namespace InfoMercado.Services
                 
                 _infomercado001Contratos.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
                 _infomercado002Usinas.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
-                // _infomercado003Comsumo(excelPackage, infoMercadoArquivo.Ano);
+                _infomercado003Consumo.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
                 _infomercado004Contabilizacao.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
                 _infomercado005Encargos.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
                 _infomercado006Mre.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);

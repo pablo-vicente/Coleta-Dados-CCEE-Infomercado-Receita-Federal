@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Infomercado.Domain.Interfaces;
@@ -32,11 +33,14 @@ namespace InfoMercado
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
+                    CultureInfo.CurrentCulture = new CultureInfo("pt-BR");
+                    
                     services.AddHostedService<InfoMercadoHostService>();
 
                     services.AddSingleton<InfomercadoArquivoService>();
                     services.AddSingleton<Infomercado001Contratos>();
                     services.AddSingleton<Infomercado002Usinas>();
+                    services.AddSingleton<Infomercado003Consumo>();
                     services.AddSingleton<Infomercado004Contabilizacao>();
                     services.AddSingleton<Infomercado005Encargos>();
                     services.AddSingleton<Infomercado006Mre>();
@@ -63,6 +67,9 @@ namespace InfoMercado
                     services.AddTransient<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMreRepository>();
                     services.AddTransient<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidadeRepository>();
                     services.AddTransient<GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidadeRepository>();
+                    services.AddTransient<ConsumoParcelaCargaRepository>();
+                    services.AddTransient<ConsumoPerfilAgenteRepository>();
+                    services.AddTransient<ConsumoGeracaoPerfilAgenteRepository>();
 
                     services.AddDbContext<InfoMercadoDbContext>(options =>
                     {
