@@ -19,6 +19,7 @@ namespace Infomercado.Domain.Models
             ProinfaMontanteEnergiaAlocadaUsinasParticipantesMres = new List<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre>();
             MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidades = new List<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>();
             GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidades = new List<GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidade>();
+            RepasseRiscoHidrologicos = new List<RepasseRiscoHidrologico>();
         }
 
         public int Id { get; private set; }
@@ -39,6 +40,7 @@ namespace Infomercado.Domain.Models
         public ICollection<ProinfaMontanteEnergiaAlocadaUsinasParticipantesMre> ProinfaMontanteEnergiaAlocadaUsinasParticipantesMres { get; private set; }
         public ICollection<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade> MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidades { get; private set; }
         public ICollection<GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidade> GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidades { get; private set; }
+        public ICollection<RepasseRiscoHidrologico> RepasseRiscoHidrologicos { get; private set; }
         
         public int IdUsina { get; private set; }
         

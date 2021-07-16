@@ -50,6 +50,7 @@ namespace Infomercado.Domain.Models
         public virtual DbSet<ConsumoParcelaCarga> ConsumoParcelaCargas { get; private set; }
         public virtual DbSet<ConsumoPerfilAgente> ConsumoPerfilAgentes { get; private set; }
         public virtual DbSet<ConsumoGeracaoPerfilAgente> ConsumoGeracaoPerfilAgentes { get; private set; }
+        public virtual DbSet<RepasseRiscoHidrologico> RepasseRiscoHidrologicos { get; private set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -123,6 +124,10 @@ namespace Infomercado.Domain.Models
                 .HasMany(x => x.ConsumoGeracaoPerfilAgentes)
                 .WithOne(x => x.PerfilAgente)
                 .HasForeignKey(x => x.IdPerfilAgente);
+            modelBuilder.Entity<PerfilAgente>()
+                .HasMany(x => x.RepasseRiscoHidrologicos)
+                .WithOne(x => x.PerfilAgente)
+                .HasForeignKey(x => x.IdPerfilAgente);
             
             modelBuilder.Entity<Contrato>().HasKey(x => x.Id);
             modelBuilder.Entity<Contrato>().HasAlternateKey(x => new {x.IdPerfilAgente, x.Data, x.Tipo});
@@ -169,6 +174,10 @@ namespace Infomercado.Domain.Models
                 .HasForeignKey(x => x.IdParcelaUsina);
             modelBuilder.Entity<ParcelaUsina>()
                 .HasMany(x => x.GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidades)
+                .WithOne(x => x.ParcelaUsina)
+                .HasForeignKey(x => x.IdParcelaUsina);
+            modelBuilder.Entity<ParcelaUsina>()
+                .HasMany(x => x.RepasseRiscoHidrologicos)
                 .WithOne(x => x.ParcelaUsina)
                 .HasForeignKey(x => x.IdParcelaUsina);
 
@@ -244,6 +253,10 @@ namespace Infomercado.Domain.Models
             modelBuilder.Entity<ConsumoGeracaoPerfilAgente>().HasKey(x => x.Id);
             modelBuilder.Entity<ConsumoGeracaoPerfilAgente>().Property(x => x.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<ConsumoGeracaoPerfilAgente>().HasAlternateKey(x => new {x.Mes, x.IdPerfilAgente});
+            
+            modelBuilder.Entity<RepasseRiscoHidrologico>().HasKey(x => x.Id);
+            modelBuilder.Entity<RepasseRiscoHidrologico>().Property(x => x.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<RepasseRiscoHidrologico>().HasAlternateKey(x => new {x.Mes, x.IdPerfilAgente, x.IdParcelaUsina, x.Patamar, x.Semana});
 
 
         }

@@ -23,6 +23,7 @@ namespace Infomercado.Domain.Models
             ConsumoParcelaCargas = new List<ConsumoParcelaCarga>();
             ConsumoPerfilAgentes = new List<ConsumoPerfilAgente>();
             ConsumoGeracaoPerfilAgentes = new List<ConsumoGeracaoPerfilAgente>();
+            RepasseRiscoHidrologicos = new List<RepasseRiscoHidrologico>();
         }
 
         public int Id { get; private set; }
@@ -54,6 +55,7 @@ namespace Infomercado.Domain.Models
         public virtual ICollection<ConsumoParcelaCarga> ConsumoParcelaCargas { get; }
         public virtual ICollection<ConsumoPerfilAgente> ConsumoPerfilAgentes { get; }
         public virtual ICollection<ConsumoGeracaoPerfilAgente> ConsumoGeracaoPerfilAgentes { get; }
+        public virtual ICollection<RepasseRiscoHidrologico> RepasseRiscoHidrologicos { get; }
 
         public void AtualizarSigla(string sigla) => Sigla = sigla;
         public void AtualizarClasse(Classe classe) => Classe = classe;
