@@ -840,7 +840,6 @@ namespace Infomercado.Domain.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("IdParcelaUsina")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("IdPerfilAgente")
@@ -849,22 +848,19 @@ namespace Infomercado.Domain.Migrations
                     b.Property<DateTime>("Mes")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Patamar")
+                    b.Property<int?>("Patamar")
                         .HasColumnType("int");
 
                     b.Property<double>("RiscoHidrologico")
                         .HasColumnType("float");
 
                     b.Property<int?>("Semana")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("TipoRepasseRiscoHidrologico")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasAlternateKey("Mes", "IdPerfilAgente", "IdParcelaUsina", "Patamar", "Semana", "TipoRepasseRiscoHidrologico");
 
                     b.HasIndex("IdParcelaUsina");
 
@@ -1135,9 +1131,7 @@ namespace Infomercado.Domain.Migrations
                 {
                     b.HasOne("Infomercado.Domain.Models.ParcelaUsina", "ParcelaUsina")
                         .WithMany("RepasseRiscoHidrologicos")
-                        .HasForeignKey("IdParcelaUsina")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdParcelaUsina");
 
                     b.HasOne("Infomercado.Domain.Models.PerfilAgente", "PerfilAgente")
                         .WithMany("RepasseRiscoHidrologicos")

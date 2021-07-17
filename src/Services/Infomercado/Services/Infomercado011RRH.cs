@@ -82,7 +82,7 @@ namespace InfoMercado.Services
 
                         var parcelaUsina = (ParcelaUsina)null!;
                         
-                        if (int.TryParse(worksheet.Cells[linha, 4].Value?.ToString(), out var codigoParcelaUsina))
+                        if (int.TryParse(worksheet.Cells[linha, 4].Value?.ToString(), out var codigoParcelaUsina) && codigoParcelaUsina != 0)
                         {
                             parcelaUsina = parcelaUsinasCadastrados.FirstOrDefault(x => x.Codigo == codigoParcelaUsina);
                             if (parcelaUsina is null)
@@ -145,7 +145,6 @@ namespace InfoMercado.Services
 
                         linha++;
                     }
-                    
                     _repasseRiscoHidrologicoRepository.Update(repasseRiscoHidrologicoCadastrados.ToArray());
                     _repasseRiscoHidrologicoRepository.Create(repasseRiscoHidrologicoNovos.ToArray());
                 }

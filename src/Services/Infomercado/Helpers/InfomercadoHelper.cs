@@ -12,11 +12,11 @@ namespace Infomercado.Helpers
         
         public static int ObterPrimeiraLinhaDados(ExcelWorksheet worksheet, string primeiraColuna, int linhaInicial = 1)
         {
-            var valorLinha = worksheet.Cells[linhaInicial, 2].Value?.ToString();
+            var valorLinha = worksheet.Cells[linhaInicial, 2].Value?.ToString()?.Trim();
 
-            while (string.IsNullOrEmpty(valorLinha) || !valorLinha.Equals(primeiraColuna))
+            while (string.IsNullOrEmpty(valorLinha) || !valorLinha.StartsWith(primeiraColuna.Trim()))
             {
-                valorLinha = worksheet.Cells[linhaInicial, 2].Value?.ToString();
+                valorLinha = worksheet.Cells[linhaInicial, 2].Value?.ToString()?.Trim();
                 linhaInicial++;
             }
                 

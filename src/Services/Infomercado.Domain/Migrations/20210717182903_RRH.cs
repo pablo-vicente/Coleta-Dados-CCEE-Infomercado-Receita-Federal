@@ -14,23 +14,22 @@ namespace Infomercado.Domain.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TipoRepasseRiscoHidrologico = table.Column<int>(type: "int", nullable: false),
-                    IdParcelaUsina = table.Column<int>(type: "int", nullable: false),
+                    IdParcelaUsina = table.Column<int>(type: "int", nullable: true),
                     IdPerfilAgente = table.Column<int>(type: "int", nullable: false),
-                    Semana = table.Column<int>(type: "int", nullable: false),
-                    Patamar = table.Column<int>(type: "int", nullable: false),
+                    Semana = table.Column<int>(type: "int", nullable: true),
+                    Patamar = table.Column<int>(type: "int", nullable: true),
                     Mes = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RiscoHidrologico = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RepasseRiscoHidrologicos", x => x.Id);
-                    table.UniqueConstraint("AK_RepasseRiscoHidrologicos_Mes_IdPerfilAgente_IdParcelaUsina_Patamar_Semana", x => new { x.Mes, x.IdPerfilAgente, x.IdParcelaUsina, x.Patamar, x.Semana });
                     table.ForeignKey(
                         name: "FK_RepasseRiscoHidrologicos_ParcelaUsinas_IdParcelaUsina",
                         column: x => x.IdParcelaUsina,
                         principalTable: "ParcelaUsinas",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_RepasseRiscoHidrologicos_PerfilAgentes_IdPerfilAgente",
                         column: x => x.IdPerfilAgente,

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infomercado.Domain.Migrations
 {
     [DbContext(typeof(InfoMercadoDbContext))]
-    [Migration("20210715001138_RRH")]
+    [Migration("20210717182903_RRH")]
     partial class RRH
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace Infomercado.Domain.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Infomercado.Domain.Models.Agente", b =>
@@ -842,7 +842,6 @@ namespace Infomercado.Domain.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("IdParcelaUsina")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("IdPerfilAgente")
@@ -851,22 +850,19 @@ namespace Infomercado.Domain.Migrations
                     b.Property<DateTime>("Mes")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Patamar")
+                    b.Property<int?>("Patamar")
                         .HasColumnType("int");
 
                     b.Property<double>("RiscoHidrologico")
                         .HasColumnType("float");
 
                     b.Property<int?>("Semana")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("TipoRepasseRiscoHidrologico")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasAlternateKey("Mes", "IdPerfilAgente", "IdParcelaUsina", "Patamar", "Semana");
 
                     b.HasIndex("IdParcelaUsina");
 
@@ -1137,9 +1133,7 @@ namespace Infomercado.Domain.Migrations
                 {
                     b.HasOne("Infomercado.Domain.Models.ParcelaUsina", "ParcelaUsina")
                         .WithMany("RepasseRiscoHidrologicos")
-                        .HasForeignKey("IdParcelaUsina")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdParcelaUsina");
 
                     b.HasOne("Infomercado.Domain.Models.PerfilAgente", "PerfilAgente")
                         .WithMany("RepasseRiscoHidrologicos")

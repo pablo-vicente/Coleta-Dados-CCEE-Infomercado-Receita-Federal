@@ -256,9 +256,6 @@ namespace Infomercado.Domain.Models
             
             modelBuilder.Entity<RepasseRiscoHidrologico>().HasKey(x => x.Id);
             modelBuilder.Entity<RepasseRiscoHidrologico>().Property(x => x.Id).ValueGeneratedOnAdd();
-            modelBuilder.Entity<RepasseRiscoHidrologico>().HasAlternateKey(x => new {x.Mes, x.IdPerfilAgente, x.IdParcelaUsina, x.Patamar, x.Semana, x.TipoRepasseRiscoHidrologico});
-
-
         }
     }
 }
