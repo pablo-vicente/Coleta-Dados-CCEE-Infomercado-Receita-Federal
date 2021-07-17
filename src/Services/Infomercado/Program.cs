@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace InfoMercado
 {
@@ -86,6 +88,10 @@ namespace InfoMercado
                 {
                     configLogging.AddConsole();
                     configLogging.AddDebug();
+                    configLogging.AddSerilog();
+
+                    var logs = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", "logs-{Date}.txt");
+                    configLogging.AddFile(logs);
                 })
                 .UseConsoleLifetime()
                 .Build();

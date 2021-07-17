@@ -40,8 +40,7 @@ namespace InfoMercado.Services
             var perfisCadatrados = _perfilAgenteRepository.ReadAll().ToList();
             var parcelaUsinasCadastrados = _parcelaUsinaRepository.ReadAll().ToList();
             
-            var repasseRiscoHidrologicoCadastrados = _repasseRiscoHidrologicoRepository.ReadByYear(ano).ToList();
-            var repasseRiscoHidrologicoNovos = new List<RepasseRiscoHidrologico>();
+            
             
             try
             {
@@ -67,6 +66,9 @@ namespace InfoMercado.Services
                 var linha = 1;
                 foreach (var tabela in tabelas)
                 {
+                    var repasseRiscoHidrologicoCadastrados = _repasseRiscoHidrologicoRepository.ReadByYearTipo(ano, tabela).ToList();
+                    var repasseRiscoHidrologicoNovos = new List<RepasseRiscoHidrologico>();
+                    
                     var primeiraLinha = InfomercadoHelper.ObterPrimeiraLinhaDados(worksheet, primeiraColunaTabela1, linha);
                     linha = primeiraLinha;
                     var primeiraColunaMes = InfomercadoHelper.ObterPrimeiraColunaMes(primeiraLinha, worksheet);
@@ -144,10 +146,9 @@ namespace InfoMercado.Services
                         linha++;
                     }
                     
+                    _repasseRiscoHidrologicoRepository.Update(repasseRiscoHidrologicoCadastrados.ToArray());
+                    _repasseRiscoHidrologicoRepository.Create(repasseRiscoHidrologicoNovos.ToArray());
                 }
-
-                _repasseRiscoHidrologicoRepository.Update(repasseRiscoHidrologicoCadastrados.ToArray());
-                _repasseRiscoHidrologicoRepository.Create(repasseRiscoHidrologicoNovos.ToArray());
             }
             catch (Exception ex)
             {
