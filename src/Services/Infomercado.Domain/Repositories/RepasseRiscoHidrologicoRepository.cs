@@ -14,9 +14,9 @@ namespace Infomercado.Domain.Repositories
 
         public IEnumerable<RepasseRiscoHidrologico> ReadAll() => _infoMercadoDbContext.RepasseRiscoHidrologicos.ToList();
 
-        public IEnumerable<RepasseRiscoHidrologico> ReadByYear(int ano) => _infoMercadoDbContext
+        public IEnumerable<RepasseRiscoHidrologico> ReadByYearTipo(int ano, TipoRepasseRiscoHidrologico tipoRepasseRiscoHidrologico) => _infoMercadoDbContext
             .RepasseRiscoHidrologicos
-            .Where(x => x.Mes.Year == ano)
+            .Where(x => x.Mes.Year == ano && x.TipoRepasseRiscoHidrologico == tipoRepasseRiscoHidrologico)
             .ToList();
 
         public RepasseRiscoHidrologico Read(int id) => _infoMercadoDbContext.RepasseRiscoHidrologicos.Find(id);
