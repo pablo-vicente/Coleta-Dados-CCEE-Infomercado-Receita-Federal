@@ -62,10 +62,9 @@ namespace InfoMercado.Services
             var primeiraColunaMes = InfomercadoHelper.ObterPrimeiraColunaMes(primeiraLinha, worksheet);
             var linha = primeiraLinha;
             
+            _logger.LogInformation($"Importando linha: {linha} - {nomePlanilha}");
             while (int.TryParse(worksheet.Cells[linha, 4].Value?.ToString(), out var codigoPerfilAgente))
             {
-                _logger.LogInformation($"Importando linha: {linha} - {nomePlanilha}");
-
                 var perfilAgente = _perfisCadatrados.FirstOrDefault(x => x.Codigo == codigoPerfilAgente);
 
                 if (perfilAgente is null)

@@ -64,10 +64,9 @@ namespace InfoMercado.Services
 
             var montanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidadeNovos = new List<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>();
             
+            _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
             while (DateTime.TryParse(worksheet.Cells[linha, 2].Value?.ToString(), out var mes))
             {
-                _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
-
                 var codigoParcelaUsina = int.Parse(worksheet.Cells[linha, 4].Value.ToString());
                 var parcelaUsina = parcelasUsinaCadatrados.FirstOrDefault(x => x.Codigo == codigoParcelaUsina);
 
@@ -139,10 +138,9 @@ namespace InfoMercado.Services
 
             var geracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidadeNovos = new List<GeracaoGarantiaFisicaUsinasParticipantesLeiloesDisponibilidade>();
             
+            _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
             while (DateTime.TryParse(worksheet.Cells[linha, 2].Value?.ToString(), out var mes))
             {
-                _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
-
                 var codigoParcelaUsina = int.Parse(worksheet.Cells[linha, 4].Value.ToString());
                 var parcelaUsina = parcelasUsinaCadatrados.FirstOrDefault(x => x.Codigo == codigoParcelaUsina);
 

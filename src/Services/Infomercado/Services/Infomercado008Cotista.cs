@@ -81,7 +81,7 @@ namespace InfoMercado.Services
             
             while (DateTime.TryParse(worksheet.Cells[linha, 2].Value?.ToString(), out var mes))
             {
-                _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
+                // _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
 
                 var codigoParcelaUsina = int.Parse(worksheet.Cells[linha, 3].Value.ToString());
                 var parcelaUsina = parcelasUsinaCadatrados.FirstOrDefault(x => x.Codigo == codigoParcelaUsina);
@@ -140,10 +140,9 @@ namespace InfoMercado.Services
 
             var receitaVendaDistribuidoraCotistaGarantiaFisicaNovos = new List<ReceitaVendaDistribuidoraCotistaGarantiaFisica>();
             
+            _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
             while (DateTime.TryParse(worksheet.Cells[linha, 2].Value?.ToString(), out var mes))
             {
-                _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
-
                 var codigoPerfilAgente = int.Parse(worksheet.Cells[linha, 3].Value?.ToString());
                 var perfilAgente = perfisCadatrados.FirstOrDefault(x => x.Codigo == codigoPerfilAgente);
 
@@ -209,10 +208,9 @@ namespace InfoMercado.Services
 
             var receitaVendaComercializacaoEnergiaNuclearNovos = new List<ReceitaVendaComercializacaoEnergiaNuclear>();
             
+            _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
             while (DateTime.TryParse(worksheet.Cells[linha, 2].Value?.ToString(), out var mes))
             {
-                _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
-
                 var codigoPerfilAgente = int.Parse(worksheet.Cells[linha, 3].Value?.ToString());
                 var perfilAgente = perfisCadatrados.FirstOrDefault(x => x.Codigo == codigoPerfilAgente);
                     

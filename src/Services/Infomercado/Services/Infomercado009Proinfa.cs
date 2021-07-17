@@ -69,10 +69,9 @@ namespace InfoMercado.Services
             var primeiraColunaMes = InfomercadoHelper.ObterPrimeiraColunaMes(primeiraLinha, worksheet);
             var linha = primeiraLinha;
             
+            _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
             while (int.TryParse(worksheet.Cells[linha, 2].Value?.ToString(), out var codigoAtivo))
             {
-                _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
-
                 var codigoParcelaUsina = int.Parse(worksheet.Cells[linha, 4].Value.ToString());
                 var parcelaUsina = parcelasUsinaCadatrados.FirstOrDefault(x => x.Codigo == codigoParcelaUsina);
                     
@@ -135,10 +134,9 @@ namespace InfoMercado.Services
             var primeiraColunaMes = InfomercadoHelper.ObterPrimeiraColunaMes(primeiraLinha, worksheet);
             var linha = primeiraLinha;
             
+            _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
             while (int.TryParse(worksheet.Cells[linha, 2].Value?.ToString(), out var codigoPerfilAgente))
             {
-                _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
-
                 var perfilAgente = perfisCadatrados.FirstOrDefault(x => x.Codigo == codigoPerfilAgente);
                 if (perfilAgente is null)
                     throw new ApplicationException($"Pefil de agente {codigoPerfilAgente} não encontrato linha {linha} ignorada");

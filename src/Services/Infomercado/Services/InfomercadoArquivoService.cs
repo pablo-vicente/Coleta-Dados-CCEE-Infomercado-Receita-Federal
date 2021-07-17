@@ -47,17 +47,17 @@ namespace InfoMercado.Services
             _logger = logger;
             _infomercadoArquivoRepository = infomercadoArquivoRepository;
             
-            _infomercado001Contratos = infomercado001Contratos;
             _infomercado007PerfisAgentes = infomercado007PerfisAgentes;
+            _infomercado001Contratos = infomercado001Contratos;
+            _infomercado002Usinas = infomercado002Usinas;
+            _infomercado003Consumo = infomercado003Consumo;
+            _infomercado004Contabilizacao = infomercado004Contabilizacao;
+            _infomercado005Encargos = infomercado005Encargos;
+            _infomercado006Mre = infomercado006Mre;
             _infomercado008Cotista = infomercado008Cotista;
             _infomercado009Proinfa = infomercado009Proinfa;
-            _infomercado0012DisponibilidadeLeilao = infomercado0012DisponibilidadeLeilao;
             _infomercado011Rrh = infomercado011Rrh;
-            _infomercado003Consumo = infomercado003Consumo;
-            _infomercado006Mre = infomercado006Mre;
-            _infomercado005Encargos = infomercado005Encargos;
-            _infomercado004Contabilizacao = infomercado004Contabilizacao;
-            _infomercado002Usinas = infomercado002Usinas;
+            _infomercado0012DisponibilidadeLeilao = infomercado0012DisponibilidadeLeilao;
 
             _caminhoDownload = configuration["Planilhas_InfoMercado"];;
         }
@@ -97,7 +97,7 @@ namespace InfoMercado.Services
             IncluirArquivosSalvosRepositorioBanco();
             var infoMercadoArquivos = _infomercadoArquivoRepository.ListarInfoMercadoArquivoNaoImportados().ToList();
             
-            foreach (var infoMercadoArquivo in infoMercadoArquivos)
+            foreach (var infoMercadoArquivo in infoMercadoArquivos.Take(1))
             {
                 var path = Path.Combine(_caminhoDownload, infoMercadoArquivo.Nome);
                 var fileInfo = new FileInfo(path);
@@ -105,21 +105,21 @@ namespace InfoMercado.Services
                 _logger.LogInformation($"Lendo arquivo \"{fileInfo.Name}\" CCEE. Tamanho: {fileInfo.Length / 1024 / 1024} MB");
                 using var excelPackage = new ExcelPackage(fileInfo);
 
-                _infomercado007PerfisAgentes.ImportarPlanilha(excelPackage);
-                
-                _infomercado001Contratos.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
-                _infomercado002Usinas.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
-                _infomercado003Consumo.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
-                _infomercado004Contabilizacao.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
-                _infomercado005Encargos.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
-                _infomercado006Mre.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
-                _infomercado008Cotista.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
-                _infomercado009Proinfa.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
+                // _infomercado007PerfisAgentes.ImportarPlanilha(excelPackage);
+                //
+                // _infomercado001Contratos.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
+                // _infomercado002Usinas.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
+                // _infomercado003Consumo.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
+                // _infomercado004Contabilizacao.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
+                // _infomercado005Encargos.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
+                // _infomercado006Mre.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
+                // _infomercado008Cotista.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
+                // _infomercado009Proinfa.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
                 _infomercado011Rrh.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
-                _infomercado0012DisponibilidadeLeilao.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
+                // _infomercado0012DisponibilidadeLeilao.ImportarPlanilha(excelPackage, infoMercadoArquivo.Ano);
                 
                 // Registra o Arquivo InfoMercado como lido
-                // infoMercadoArquivo.AtualizarLido(true);
+                infoMercadoArquivo.AtualizarLido(true);
                 _infomercadoArquivoRepository.Update(infoMercadoArquivo);
                 _logger.LogInformation($"Arquivo \"{fileInfo.Name}\" importado com sucesso.");
             }

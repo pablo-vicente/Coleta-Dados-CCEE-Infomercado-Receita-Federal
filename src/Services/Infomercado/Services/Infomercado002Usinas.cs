@@ -45,9 +45,9 @@ namespace InfoMercado.Services
                 var primeiraLinha = InfomercadoHelper.ObterPrimeiraLinhaDados(worksheet, PrimeiraColuna);
                 var linha = primeiraLinha;
             
+                _logger.LogInformation($"Importando linha: {linha} - {nomePlanilha}");
                 while (int.TryParse(worksheet.Cells[linha, 2].Value?.ToString(), out var codigoAtivo))
                 {
-                    _logger.LogInformation($"Importando linha: {linha} - {nomePlanilha}");
 
                     var siglaAtivo = worksheet.Cells[linha, 3].Value.ToString();
                     var submercado = EnumHelper<Submercado>.GetValueFromName(worksheet.Cells[linha, 11].Value.ToString());
