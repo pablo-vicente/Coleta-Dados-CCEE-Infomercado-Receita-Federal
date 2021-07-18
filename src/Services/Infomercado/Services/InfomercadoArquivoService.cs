@@ -97,7 +97,7 @@ namespace InfoMercado.Services
             IncluirArquivosSalvosRepositorioBanco();
             var infoMercadoArquivos = _infomercadoArquivoRepository.ListarInfoMercadoArquivoNaoImportados().ToList();
             
-            foreach (var infoMercadoArquivo in infoMercadoArquivos.Take(1))
+            foreach (var infoMercadoArquivo in infoMercadoArquivos)
             {
                 var path = Path.Combine(_caminhoDownload, infoMercadoArquivo.Nome);
                 var fileInfo = new FileInfo(path);
