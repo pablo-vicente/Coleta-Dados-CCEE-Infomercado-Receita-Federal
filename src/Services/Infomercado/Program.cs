@@ -86,6 +86,7 @@ namespace InfoMercado
                 })
                 .ConfigureLogging((hostContext, configLogging) =>
                 {
+                    configLogging.AddConfiguration(hostContext.Configuration.GetSection("Logging"));
                     configLogging.AddConsole();
                     configLogging.AddDebug();
                     configLogging.AddSerilog();
