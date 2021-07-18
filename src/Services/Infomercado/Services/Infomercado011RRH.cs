@@ -73,9 +73,9 @@ namespace InfoMercado.Services
                     linha = primeiraLinha;
                     var primeiraColunaMes = InfomercadoHelper.ObterPrimeiraColunaMes(primeiraLinha, worksheet);
                     
-                    _logger.LogInformation($"Importando {tabela.ToString()}");
                     while (int.TryParse(worksheet.Cells[linha, 2].Value?.ToString(), out var codigoPerfilAgente))
                     {
+                        _logger.LogInformation($"Importando {linha} - {tabela.GetHashCode()}/14-{tabela.ToString()}");
                         var perfilAgente = perfisCadatrados.FirstOrDefault(x => x.Codigo == codigoPerfilAgente);
                         if (perfilAgente is null)
                             throw new ApplicationException($"Pefil de agente {codigoPerfilAgente} não encontrato");

@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   SQL-SERVER:
-    container_name: SQL-SERVER
+    container_name: SQL-SERVER-TCC
     image: "mcr.microsoft.com/mssql/server:2019-latest"
     environment:
       ACCEPT_EULA: "Y"

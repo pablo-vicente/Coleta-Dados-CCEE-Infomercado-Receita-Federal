@@ -39,9 +39,10 @@ namespace InfoMercado.Services
 
             try
             {
-                _logger.LogInformation($"Importando linha: {linha} - {nomePlanilha}");
+               
                 while (int.TryParse(worksheet.Cells[linha, 2].Value?.ToString(), out var codigoAgente))
                 {
+                    _logger.LogInformation($"Importando linha: {linha} - {nomePlanilha}");
                     var sigla = worksheet.Cells[linha, 3].Value.ToString();
                     var nomeEmpresarial = worksheet.Cells[linha, 4].Value.ToString();
                     var cnpj = InfomercadoHelper.FormatarCnpj(worksheet.Cells[linha, 5].Value.ToString());

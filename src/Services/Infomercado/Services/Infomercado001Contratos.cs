@@ -59,46 +59,53 @@ namespace InfoMercado.Services
 
         private void ImportarTipoContrato(ExcelWorksheet worksheet, int primeiraLinha, string nomePlanilha, TipoContrato tipoContrato)
         {
-            var primeiraColunaMes = InfomercadoHelper.ObterPrimeiraColunaMes(primeiraLinha, worksheet);
             var linha = primeiraLinha;
-            
-            _logger.LogInformation($"Importando linha: {linha} - {nomePlanilha}");
-            while (int.TryParse(worksheet.Cells[linha, 4].Value?.ToString(), out var codigoPerfilAgente))
+            try
             {
-                var perfilAgente = _perfisCadatrados.FirstOrDefault(x => x.Codigo == codigoPerfilAgente);
-
-                if (perfilAgente is null)
-                    throw new ApplicationException($"Pefil de agente {codigoPerfilAgente} não encontrato");
-                    
-                // PERCORRE OS MESES DA PLANILHA
-                for (int col = primeiraColunaMes; col <= primeiraColunaMes + 11; col++)
+                var primeiraColunaMes = InfomercadoHelper.ObterPrimeiraColunaMes(primeiraLinha, worksheet);
+                
+                while (int.TryParse(worksheet.Cells[linha, 4].Value?.ToString(), out var codigoPerfilAgente))
                 {
-                    var dataColuna = worksheet.Cells[primeiraLinha - 1, col].Value?.ToString();
-                    var dataConvertida = Convert.ToDateTime(dataColuna, CultureInfo.CurrentCulture);
-                    var dataInicioMes = new DateTime(dataConvertida.Year, dataConvertida.Month, 1);
+                    _logger.LogInformation($"Importando linha: {linha} - {nomePlanilha}");
+                    var perfilAgente = _perfisCadatrados.FirstOrDefault(x => x.Codigo == codigoPerfilAgente);
 
-                    if (dataInicioMes > DateTime.Today)
-                        break;
-                    
-                    var valor = InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, col].Value?.ToString());
-
-                    var contrato =
-                        _contratosCadastrados.FirstOrDefault(x =>
-                            x.Data == dataInicioMes && x.IdPerfilAgente == perfilAgente.Id && x.Tipo == tipoContrato) ??
-                        _contratosNovos.FirstOrDefault(x =>
-                            x.Data == dataInicioMes && x.IdPerfilAgente == perfilAgente.Id && x.Tipo == tipoContrato);
-
-                    if (contrato is null)
-                    {
-                        contrato = new Contrato(dataInicioMes, valor, tipoContrato, perfilAgente.Id);
-                        _contratosNovos.Add(contrato);
-                    }
-                    else
-                        contrato.AtualizaContratacaoMWm(valor);
+                    if (perfilAgente is null)
+                        throw new ApplicationException($"Pefil de agente {codigoPerfilAgente} não encontrato");
                         
-                }
+                    // PERCORRE OS MESES DA PLANILHA
+                    for (int col = primeiraColunaMes; col <= primeiraColunaMes + 11; col++)
+                    {
+                        var dataColuna = worksheet.Cells[primeiraLinha - 1, col].Value?.ToString();
+                        var dataConvertida = Convert.ToDateTime(dataColuna, CultureInfo.CurrentCulture);
+                        var dataInicioMes = new DateTime(dataConvertida.Year, dataConvertida.Month, 1);
 
-                linha++;
+                        if (dataInicioMes > DateTime.Today)
+                            break;
+                        
+                        var valor = InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, col].Value?.ToString());
+
+                        var contrato =
+                            _contratosCadastrados.FirstOrDefault(x =>
+                                x.Data == dataInicioMes && x.IdPerfilAgente == perfilAgente.Id && x.Tipo == tipoContrato) ??
+                            _contratosNovos.FirstOrDefault(x =>
+                                x.Data == dataInicioMes && x.IdPerfilAgente == perfilAgente.Id && x.Tipo == tipoContrato);
+
+                        if (contrato is null)
+                        {
+                            contrato = new Contrato(dataInicioMes, valor, tipoContrato, perfilAgente.Id);
+                            _contratosNovos.Add(contrato);
+                        }
+                        else
+                            contrato.AtualizaContratacaoMWm(valor);
+                            
+                    }
+
+                    linha++;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"Erro na linha {linha}", ex);
             }
             
         }

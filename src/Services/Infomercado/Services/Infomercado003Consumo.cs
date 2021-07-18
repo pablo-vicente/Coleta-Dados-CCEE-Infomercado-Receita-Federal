@@ -71,9 +71,10 @@ namespace InfoMercado.Services
             
             var linha = primeiraLinha;
             
-            _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
+            
             while (DateTime.TryParse(worksheet.Cells[linha, 2].Value?.ToString(), out var mes))
             {
+                _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
                 var codigoPerfilAgente = int.Parse(worksheet.Cells[linha, 3].Value?.ToString());
                 var perfilAgente = perfisCadatrados.FirstOrDefault(x => x.Codigo == codigoPerfilAgente);
                 if (perfilAgente is null)
