@@ -85,9 +85,13 @@ namespace InfoMercado.Services
 
                 var codigoParcelaUsina = int.Parse(worksheet.Cells[linha, 3].Value.ToString());
                 var parcelaUsina = parcelasUsinaCadatrados.FirstOrDefault(x => x.Codigo == codigoParcelaUsina);
-                    
+
                 if (parcelaUsina is null)
-                    throw new ApplicationException($"Parcela usina {codigoParcelaUsina} não encontrado");
+                {
+                    Console.WriteLine($"Parcela usina {codigoParcelaUsina} não encontrado");
+                    linha++;
+                    continue;
+                }
                 
                 var fatorAdequacao = InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, 5].Value?.ToString());
                 var receitaFixaPreliminar = InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, 6].Value?.ToString());

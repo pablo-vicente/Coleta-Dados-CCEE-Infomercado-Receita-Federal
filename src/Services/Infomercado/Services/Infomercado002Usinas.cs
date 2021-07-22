@@ -102,7 +102,7 @@ namespace InfoMercado.Services
                     var tipoDespacho = EnumHelper<TipoDespacho>.GetValueFromName(worksheet.Cells[linha, 7].Value.ToString());
                     var participanteRateioPerda = worksheet.Cells[linha, 8].Value.ToString().Equals("Sim");
                     var fontePrimariaEnergia = EnumHelper<FonteEnergiaPrimaria>.GetValueFromName(worksheet.Cells[linha, 9].Value.ToString());
-                    var combustivel = EnumHelper<Combustivel>.GetValueFromName(worksheet.Cells[linha, 10].Value.ToString());
+                    var combustivel = EnumHelper<Combustivel>.GetValueFromName(worksheet.Cells[linha, 10].Value?.ToString());
                     var participanteMre = worksheet.Cells[linha, 14].Value.ToString().Equals("Sim");
                     var participanteRegimeCotas = worksheet.Cells[linha, 15].Value.ToString().Equals("Sim");
                     var taxaDescontoUsina = InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, 16].Value?.ToString());

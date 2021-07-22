@@ -227,7 +227,7 @@ namespace Infomercado.Domain.Models
             modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().HasKey(x => x.Id);
             modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().Property(x => x.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().Property(x => x.CegeEmpreendimento).HasMaxLength(200);
-            modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().Property(x => x.Leilao).HasMaxLength(50);
+            modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().Property(x => x.Leilao).HasMaxLength(100);
             modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().Property(x => x.Produto).HasMaxLength(8);
             modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().Property(x => x.SiglaLeilao).HasMaxLength(50);
             modelBuilder.Entity<MontanteContratadoGarantiaFisicaComprometidaGeracaoDestinadaLeilaoDisponibilidade>().HasAlternateKey(x => new {x.IdParcelaUsina, x.MesAno, x.Leilao, x.Produto, x.CegeEmpreendimento});

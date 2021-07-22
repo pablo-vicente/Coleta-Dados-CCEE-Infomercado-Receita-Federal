@@ -40,8 +40,6 @@ namespace InfoMercado.Services
             var perfisCadatrados = _perfilAgenteRepository.ReadAll().ToList();
             var parcelaUsinasCadastrados = _parcelaUsinaRepository.ReadAll().ToList();
             
-            
-            
             try
             {
                 const string primeiraColunaTabela1 = "Cód. Perfil ";
@@ -81,20 +79,29 @@ namespace InfoMercado.Services
                             throw new ApplicationException($"Pefil de agente {codigoPerfilAgente} não encontrato");
 
                         var parcelaUsina = (ParcelaUsina)null!;
-                        
-                        if (int.TryParse(worksheet.Cells[linha, 4].Value?.ToString(), out var codigoParcelaUsina) && codigoParcelaUsina != 0)
+                        var semana = (int?) null;
+                        var patamar = (Patamar?) null;
+
+                        if (tabela.GetHashCode() < 11)
                         {
-                            parcelaUsina = parcelaUsinasCadastrados.FirstOrDefault(x => x.Codigo == codigoParcelaUsina);
-                            if (parcelaUsina is null)
-                                throw new ApplicationException($"Parcela usina {codigoParcelaUsina} não encontrado");
+                            if (int.TryParse(worksheet.Cells[linha, 4].Value?.ToString(), out var codigoParcelaUsina) && codigoParcelaUsina != 0)
+                            {
+                                parcelaUsina = parcelaUsinasCadastrados.FirstOrDefault(x => x.Codigo == codigoParcelaUsina);
+                                if (parcelaUsina is null)
+                                    throw new ApplicationException($"Parcela usina {codigoParcelaUsina} não encontrado");
+                            }
+
+                            if (tabela.GetHashCode() < 8)
+                            {
+                                var semanaString = worksheet.Cells[linha, 6].Value?.ToString();
+                                semana = (semanaString is null || !semanaString.Contains("ª"))
+                                    ? null
+                                    : int.Parse(semanaString.Split("ª")[0]);
+                        
+                                patamar = EnumHelper<Patamar>.GetValueFromName(worksheet.Cells[linha, 7].Value?.ToString());
+                            }
+                           
                         }
-                        
-                        var semanaString = worksheet.Cells[linha, 6].Value?.ToString();
-                        var semana = (semanaString is null || !semanaString.Contains("ª"))
-                            ? (int?) null
-                            : int.Parse(semanaString.Split("ª")[0]);
-                        
-                        var patamar = EnumHelper<Patamar>.GetValueFromName(worksheet.Cells[linha, 7].Value?.ToString());
                         
                         // PERCORRE OS MESES DA PLANILHA
                         for (int col = primeiraColunaMes; col <= primeiraColunaMes + 11; col++)

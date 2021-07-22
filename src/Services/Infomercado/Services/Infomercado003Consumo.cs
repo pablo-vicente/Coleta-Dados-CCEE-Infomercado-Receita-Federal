@@ -71,7 +71,6 @@ namespace InfoMercado.Services
             
             var linha = primeiraLinha;
             
-            
             while (DateTime.TryParse(worksheet.Cells[linha, 2].Value?.ToString(), out var mes))
             {
                 _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
@@ -82,22 +81,41 @@ namespace InfoMercado.Services
                 
                 var codigoCarga = int.Parse(worksheet.Cells[linha, 6].Value.ToString());
                 var carga = worksheet.Cells[linha, 7].Value.ToString();
-                var cidade = worksheet.Cells[linha, 8].Value.ToString();
-                var estado = worksheet.Cells[linha, 9].Value.ToString();
-                var ramoAtividade = worksheet.Cells[linha, 10].Value.ToString();
-                var submercado = EnumHelper<Submercado>.GetValueFromName(worksheet.Cells[linha, 11].Value.ToString());
-                var dataTemp = worksheet.Cells[linha, 12].Value.ToString();
-                var dataMigracao = (string.IsNullOrEmpty(dataTemp) || dataTemp.Equals("0"))
-                    ? (DateTime?) null
-                    : DateTime.Parse(worksheet.Cells[linha, 12].Value.ToString(),
-                        CultureInfo.CreateSpecificCulture("pt-BR"));
                 
-                var codigoPerfilDistribuidora = (int?) InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, 13].Value?.ToString());
-                var siglaPerfilDistribuidora = worksheet.Cells[linha, 14].Value?.ToString();
-                var capacidadeCarga = InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, 15].Value?.ToString());
-                var consumoAmbienteLivre = InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, 16].Value?.ToString());
-                var consumoAjustadoCativa = InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, 17].Value?.ToString());
-                var consumoAjustadoParcelaCarga = InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, 17].Value?.ToString());
+                var coluna = worksheet.Cells[primeiraLinha - 1, 8].Value.ToString()
+                    .Equals("Cidade", StringComparison.InvariantCultureIgnoreCase)
+                    ? 8
+                    : 9;
+                
+                var cidade = worksheet.Cells[linha, coluna].Value?.ToString();
+                coluna++;
+                var estado = worksheet.Cells[linha, coluna].Value?.ToString();
+                coluna++;
+                var ramoAtividade = worksheet.Cells[linha, coluna].Value?.ToString();
+                coluna++;
+                var submercado = EnumHelper<Submercado>.GetValueFromName(worksheet.Cells[linha, coluna].Value?.ToString());
+                coluna++;
+                var dataTemp = worksheet.Cells[linha, coluna].Value?.ToString();
+                DateTime? dataMigracao;
+                if (string.IsNullOrEmpty(dataTemp) || dataTemp.Equals("0"))
+                    dataMigracao = null;
+                else if (DateTime.TryParse(dataTemp, CultureInfo.CreateSpecificCulture("pt-BR"), DateTimeStyles.None, out var dtParse))
+                    dataMigracao = dtParse;
+                else
+                    dataMigracao = DateTime.FromOADate(Convert.ToDouble(dataTemp));
+                
+                coluna++;
+                var codigoPerfilDistribuidora = (int?) InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, coluna].Value?.ToString());
+                coluna++;
+                var siglaPerfilDistribuidora = worksheet.Cells[linha, coluna].Value?.ToString();
+                coluna++;
+                var capacidadeCarga = InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, coluna].Value?.ToString());
+                coluna++;
+                var consumoAmbienteLivre = InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, coluna].Value?.ToString());
+                coluna++;
+                var consumoAjustadoCativa = InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, coluna].Value?.ToString());
+                coluna++;
+                var consumoAjustadoParcelaCarga = InfomercadoHelper.ConverteDouble(worksheet.Cells[linha, coluna].Value?.ToString());
 
                 var consumoParcelaCarga =
                     consumoParcelaCargaCadastrados.FirstOrDefault(x =>
@@ -163,13 +181,17 @@ namespace InfoMercado.Services
             
             while (int.TryParse(worksheet.Cells[linha, 2].Value?.ToString(), out var codigoPerfilAgente))
             {
+                var colunaPatamar = worksheet.Cells[primeiraLinha - 1, 5].Value.ToString()
+                    .Equals("Patamar", StringComparison.InvariantCultureIgnoreCase)
+                    ? 5
+                    : 6;
                 _logger.LogInformation($"Importando linha: {linha} - {NomePlanilha}");
 
                 var perfilAgente = perfisCadatrados.FirstOrDefault(x => x.Codigo == codigoPerfilAgente);
                 if (perfilAgente is null)
                     throw new ApplicationException($"Pefil de agente {codigoPerfilAgente} não encontrato linha {linha} ignorada");
                 
-                var patamar = EnumHelper<Patamar>.GetValueFromName(worksheet.Cells[linha, 5].Value.ToString());
+                var patamar = EnumHelper<Patamar>.GetValueFromName(worksheet.Cells[linha, colunaPatamar].Value.ToString());
 
                 // PERCORRE OS MESES DA PLANILHA
                 for (int col = primeiraColunaMes; col <= primeiraColunaMes + 11; col++)
