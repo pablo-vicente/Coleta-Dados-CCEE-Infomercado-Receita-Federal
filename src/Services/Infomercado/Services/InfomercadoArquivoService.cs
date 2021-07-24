@@ -59,7 +59,7 @@ namespace InfoMercado.Services
             _infomercado011Rrh = infomercado011Rrh;
             _infomercado0012DisponibilidadeLeilao = infomercado0012DisponibilidadeLeilao;
 
-            _caminhoDownload = configuration["Planilhas_InfoMercado"];;
+            _caminhoDownload = configuration["Planilhas_InfoMercado"];
         }
 
         /// <summary>

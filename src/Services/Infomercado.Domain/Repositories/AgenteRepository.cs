@@ -34,5 +34,14 @@ namespace Infomercado.Domain.Repositories
             _infoMercadoDbContext.Agentes.RemoveRange(entity);
             _infoMercadoDbContext.SaveChanges();
         }
+        
+        public IEnumerable<string> ListarCnpjs()
+        {
+            return _infoMercadoDbContext
+                .Agentes
+                .Select(x => x.Cnpj)
+                .Distinct()
+                .ToList();
+        }
     }
 }
