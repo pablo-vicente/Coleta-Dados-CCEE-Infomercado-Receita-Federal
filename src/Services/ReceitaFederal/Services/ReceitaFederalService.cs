@@ -144,11 +144,13 @@ namespace ReceitaFederal.Services
                 }
 
                 _logger.LogInformation($"Arquivo \"{arquivo.Name}\" importado com sucesso.");
-                receitaFederalArquivo.AtualizarLido(true);
-                _receitaFederalArquivoRepository.Update(receitaFederalArquivo);
+                
                 // Apagar Arquivo
                 arquivoExtraido.Delete();
             }
+            
+            receitaFederalArquivo.AtualizarLido(true);
+            _receitaFederalArquivoRepository.Update(receitaFederalArquivo);
         }
 
         private void ImportarDadosEmpresa(string linha, Empresa empresa)
@@ -272,8 +274,8 @@ namespace ReceitaFederal.Services
             long.TryParse(campos.Ler(14), out var cnpj); //CNPJ
             Enum.TryParse<TipoSocio>(campos.Ler(1).Trim(), out var tipoSocio);
             var nome = campos.Ler(150).Trim();
-            var numero = Convert.ToUInt64(campos.Ler(14).Trim(), CultureInfo.CurrentCulture)
-                .ToString(@"00\.000\.000\/0000\-00", CultureInfo.CurrentCulture);
+            var numeroSemFormatacao = campos.Ler(14).Trim();
+            var numero = FormatarNumeroSocio(numeroSemFormatacao, tipoSocio);
 
             var cnpjEmpresa = RetirarFormatacaoCnpj(empresa.Cnpj);
             if (cnpjEmpresa != cnpj)
@@ -282,6 +284,20 @@ namespace ReceitaFederal.Services
             return socio;
         }
         
+        private string FormatarNumeroSocio(string numeroSocio, TipoSocio tipoSocio)
+        {
+            switch (tipoSocio)
+            {
+                case TipoSocio.PessoalJuridica:
+                    return Convert.ToUInt64(numeroSocio, CultureInfo.CurrentCulture)
+                        .ToString(@"00\.000\.000\/0000\-00", CultureInfo.CurrentCulture);
+                case TipoSocio.PessoaFisica:
+                case TipoSocio.Estrangeiro:
+                    return numeroSocio;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
         private long BuscarPosicaoCnpjArquivo(FileStream fileStream, long cnpj)
         {
             long offsetInicio = 0;
