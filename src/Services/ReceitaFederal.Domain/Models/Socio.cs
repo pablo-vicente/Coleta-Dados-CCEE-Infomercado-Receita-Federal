@@ -24,15 +24,14 @@ namespace ReceitaFederal.Domain.Models
 
         private string ValidarNumeroSocio(string numeroSocio, TipoSocio tipoSocio)
         {
-            switch (TipoSocio)
+            switch (tipoSocio)
             {
                 case TipoSocio.PessoalJuridica:
                     return Convert.ToUInt64(numeroSocio, CultureInfo.CurrentCulture)
                         .ToString(@"00\.000\.000\/0000\-00", CultureInfo.CurrentCulture);
                 case TipoSocio.PessoaFisica:
                 case TipoSocio.Estrangeiro:
-                    return Convert.ToUInt64(numeroSocio, CultureInfo.CurrentCulture)
-                        .ToString(@"000\.000\.000\-00", CultureInfo.CurrentCulture);
+                    return numeroSocio;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

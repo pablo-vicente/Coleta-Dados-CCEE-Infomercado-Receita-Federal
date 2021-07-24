@@ -43,7 +43,6 @@ namespace ReceitaFederal.Domain.Models
             modelBuilder.Entity<Empresa>().Property(x => x.RazaoSocial).HasMaxLength(200);
             
             modelBuilder.Entity<Socio>().HasKey(x => x.Id);
-            modelBuilder.Entity<Socio>().HasAlternateKey(x => x.Numero);
             modelBuilder.Entity<Socio>().Property(x => x.Numero).HasMaxLength(18);
             modelBuilder.Entity<Socio>().Property(x => x.Nome).HasMaxLength(200);
             

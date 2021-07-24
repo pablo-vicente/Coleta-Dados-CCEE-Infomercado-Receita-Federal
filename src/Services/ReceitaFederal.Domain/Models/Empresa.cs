@@ -9,7 +9,7 @@ namespace ReceitaFederal.Domain.Models
     {
         public Empresa(string cnpj, string razaoSocial, string nomeFantasia, SituacaoCadastral situacaoCadastral, int? motivoSituacaoCadastralId, DateTime? inicioAtividade, decimal capitalSocial, DateTime atualizacao)
         {
-            Cnpj = ValidarCnpj(cnpj);
+            Cnpj = cnpj;
             RazaoSocial = razaoSocial;
             NomeFantasia = nomeFantasia;
             SituacaoCadastral = situacaoCadastral;
@@ -45,11 +45,5 @@ namespace ReceitaFederal.Domain.Models
         public void AtualizarCapitalSocial(decimal capitalSocial) => CapitalSocial = capitalSocial;
         public void AtualizarAtualizacao(DateTime atualizacao) => Atualizacao = atualizacao;
         
-        
-        private string ValidarCnpj(string cnpj)
-        {
-            return Convert.ToUInt64(cnpj, CultureInfo.CurrentCulture)
-                .ToString(@"00\.000\.000\/0000\-00", CultureInfo.CurrentCulture);
-        }
     }
 }

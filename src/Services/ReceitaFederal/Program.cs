@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Infomercado.Domain.Models;
+using Infomercado.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,10 +40,14 @@ namespace ReceitaFederal
                     
                     services.AddHostedService<ReceitaFederalHostService>();
                     services.AddTransient<ReceitaFederalService>();
-                    services.AddTransient<ReceitaFederalArquivoRepository>();
+                    services.AddTransient<SituacaoCadastralService>();
+                    
                     services.AddTransient<EmpresaRepository>();
                     services.AddTransient<SocioRepository>();
                     services.AddTransient<MotivoSituacaoCadastralRepository>();
+                    services.AddTransient<ReceitaFederalArquivoRepository>();
+                    
+                    services.AddTransient<AgenteRepository>();
 
                     services.AddDbContext<ReceitaFederalDbContext>(options =>
                     {

@@ -62,8 +62,8 @@ namespace ReceitaFederal.Services
                 .ToList();
             
             var receitaFederalArquivos = _receitaFederalArquivoRepository.ReadAll().ToList();
+            var novosArquivos = new List<ReceitaFederalArquivo>();
 
-            var receitaFederalArquivo = new List<ReceitaFederalArquivo>();
             foreach (var arquivo in arquivos)
             {
                 var arquivoReceita = receitaFederalArquivos
@@ -73,10 +73,10 @@ namespace ReceitaFederal.Services
                     continue;
 
                 var atualizacao = DateTime.ParseExact(arquivo.Name, "yyyy-MM-dd" ,CultureInfo.CurrentCulture);
-                receitaFederalArquivos.Add(new ReceitaFederalArquivo(arquivo.Name, atualizacao));
+                novosArquivos.Add(new ReceitaFederalArquivo(arquivo.Name, atualizacao));
             }
 
-            _receitaFederalArquivoRepository.Create(receitaFederalArquivo.ToArray());
+            _receitaFederalArquivoRepository.Create(novosArquivos.ToArray());
         }
 
         public void ImportarArquivosReceitaFederal()
@@ -118,8 +118,16 @@ namespace ReceitaFederal.Services
                 {
                     _logger.LogInformation($"Lendo CNPJs: {primeiroCnpj:00\\.000\\.000\\/0000\\-00} | ATÉ: {ultimoCnpj:00\\.000\\.000\\/0000\\-00}");
 
+                    var qntCnpj = 0;
                     foreach (var cnpj in cnpjsNoArquivo)
                     {
+                        qntCnpj++;
+                        // if (qntCnpj == 166)
+                        // {
+                        //     Console.WriteLine();
+                        // }
+                        
+                        _logger.LogInformation($"{qntCnpj}/{cnpjsNoArquivo.Count} CNPJs");
                         var cnpjBarras = $"{cnpj:00\\.000\\.000\\/0000\\-00}";
                         var posicaoCnpjArquivo = BuscarPosicaoCnpjArquivo(fileStream, cnpj);
                         if (posicaoCnpjArquivo == -1)
@@ -177,8 +185,9 @@ namespace ReceitaFederal.Services
             campos.Ler(2);
             decimal.TryParse(campos.Ler(14), out var capitalSocial); //CAPITAL SOCIAL DA EMPRESA
 
-            var cnpjCompleto = cnpj.ToString().PadLeft(14, '0');
-            if (!empresa.Cnpj.Equals(cnpjCompleto, StringComparison.InvariantCultureIgnoreCase))
+            var cnpjCompleto = cnpj;
+            var cnpjEmpresa = RetirarFormatacaoCnpj(empresa.Cnpj);
+            if (cnpjCompleto != cnpjEmpresa)
                 throw new ApplicationException("Cnpj Diferente da Empresa");
 
             var motivoSituacaoCadastral = _situacaoCadastralRepository.Read(motivoSituacaoCadastralId);
@@ -264,8 +273,8 @@ namespace ReceitaFederal.Services
             var nome = campos.Ler(150).Trim();
             var numero = campos.Ler(14).Trim();
 
-            var cnpjCompleto = cnpj.ToString().PadLeft(14, '0');
-            if (!empresa.Cnpj.Equals(cnpjCompleto, StringComparison.InvariantCultureIgnoreCase))
+            var cnpjEmpresa = RetirarFormatacaoCnpj(empresa.Cnpj);
+            if (cnpjEmpresa != cnpj)
                 throw new ApplicationException("SOCIO Cadastrado na Empresa Errada");
             var socio = new Socio(nome, numero, tipoSocio, empresa.Id);
             return socio;
@@ -278,9 +287,8 @@ namespace ReceitaFederal.Services
             string linha;
 
             // PARA CASO O CNPJ SEJA INVÁLIDO
-            // var contadorCnpjInvalido = 0;
-            // while (contadorCnpjInvalido < 10)
-            while (offsetInicio != offsefFim)
+            var contadorCnpjInvalido = 0;
+            while (contadorCnpjInvalido < 10)
             {
                 linha = LerLinhaOffset(fileStream, offsefFim);
 
@@ -313,9 +321,9 @@ namespace ReceitaFederal.Services
                 }
 
                 if (offsetInicio != offsefFim) continue;
-            //     // O CNPJ PODE SER ESTAR NAS LINHAS PRÓXIMAS
-            //     offsefFim += 1201 * 2;
-            //     contadorCnpjInvalido++;
+                // O CNPJ PODE SER ESTAR NAS LINHAS PRÓXIMAS
+                offsefFim += 1201 * 2;
+                contadorCnpjInvalido++;
             }
 
             return -1;
@@ -374,7 +382,7 @@ namespace ReceitaFederal.Services
         {
             using var zipArchive = ZipFile.Open(arquivoReceitaZip.FullName, ZipArchiveMode.Read);
             var nome = zipArchive.Entries[0].Name;
-            var arquivoExtraido = new FileInfo(Path.Combine(_downloads, nome));
+            var arquivoExtraido = new FileInfo(Path.Combine(arquivoReceitaZip.Directory.ToString(), nome));
             if (!arquivoExtraido.Exists || arquivoExtraido.Length != zipArchive.Entries[0].Length)
             {
                 _logger.LogInformation($"Extraindo arquivo \"{arquivoReceitaZip.Name}\"...");
