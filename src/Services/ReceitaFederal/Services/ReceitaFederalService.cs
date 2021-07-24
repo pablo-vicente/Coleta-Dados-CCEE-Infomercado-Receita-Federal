@@ -144,7 +144,8 @@ namespace ReceitaFederal.Services
                 }
 
                 _logger.LogInformation($"Arquivo \"{arquivo.Name}\" importado com sucesso.");
-
+                receitaFederalArquivo.AtualizarLido(true);
+                _receitaFederalArquivoRepository.Update(receitaFederalArquivo);
                 // Apagar Arquivo
                 arquivoExtraido.Delete();
             }
@@ -271,7 +272,8 @@ namespace ReceitaFederal.Services
             long.TryParse(campos.Ler(14), out var cnpj); //CNPJ
             Enum.TryParse<TipoSocio>(campos.Ler(1).Trim(), out var tipoSocio);
             var nome = campos.Ler(150).Trim();
-            var numero = campos.Ler(14).Trim();
+            var numero = Convert.ToUInt64(campos.Ler(14).Trim(), CultureInfo.CurrentCulture)
+                .ToString(@"00\.000\.000\/0000\-00", CultureInfo.CurrentCulture);
 
             var cnpjEmpresa = RetirarFormatacaoCnpj(empresa.Cnpj);
             if (cnpjEmpresa != cnpj)
